@@ -1,0 +1,2 @@
+module ElectoHelper
+end

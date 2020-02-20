@@ -1,0 +1,2 @@
+class ElectoController < ApplicationController
+end
