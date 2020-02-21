@@ -27,9 +27,12 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
 
   create_table "elections", force: :cascade do |t|
     t.bigint "admin_id"
-    t.time "deadline_for_registration"
-    t.time "start_time"
-    t.time "end_time"
+    t.string "title"
+    t.text "description"
+    t.text "additional_information"
+    t.datetime "deadline_for_registration"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.boolean "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -71,13 +74,17 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "user_name"
     t.string "first_name"
     t.string "last_name"
     t.string "gender"
-    t.string "birth_date"
+    t.date "birth_date"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

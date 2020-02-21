@@ -1,6 +1,7 @@
 <% if !current_user %>
     <h2>Welcome to electo</h2>
     <h4>You need to <%= link_to "sign_in", new_user_session_path%> or <%= link_to "sign_up", new_user_registration_path%></h4>
+    <%=Rails.application.credentials.email%>
 <% else %>
     <p>Welcome to electo <%= current_user.user_name%></p>
     <%= link_to "logout", destroy_user_session_path, method: "delete" %><br/>
