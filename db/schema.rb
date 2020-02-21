@@ -10,10 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_19_093608) do
+ActiveRecord::Schema.define(version: 2020_02_20_083712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "election_data", force: :cascade do |t|
+    t.bigint "election_id", null: false
+    t.bigint "candidate_id"
+    t.integer "votes_count"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["candidate_id"], name: "index_election_data_on_candidate_id"
+    t.index ["election_id"], name: "index_election_data_on_election_id"
+  end
+
+  create_table "elections", force: :cascade do |t|
+    t.bigint "admin_id"
+    t.time "deadline_for_registration"
+    t.time "start_time"
+    t.time "end_time"
+    t.boolean "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_id"], name: "index_elections_on_admin_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "message_sender_id"
+    t.bigint "message_receiver_id"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_receiver_id"], name: "index_messages_on_message_receiver_id"
+    t.index ["message_sender_id"], name: "index_messages_on_message_sender_id"
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.bigint "request_sender_id"
+    t.bigint "request_receiver_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["request_receiver_id"], name: "index_requests_on_request_receiver_id"
+    t.index ["request_sender_id"], name: "index_requests_on_request_sender_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
@@ -50,4 +90,16 @@ ActiveRecord::Schema.define(version: 2020_02_19_093608) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "winners", force: :cascade do |t|
+    t.bigint "election_id", null: false
+    t.bigint "election_datum_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_datum_id"], name: "index_winners_on_election_datum_id"
+    t.index ["election_id"], name: "index_winners_on_election_id"
+  end
+
+  add_foreign_key "election_data", "elections"
+  add_foreign_key "winners", "election_data"
+  add_foreign_key "winners", "elections"
 end
