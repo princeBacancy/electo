@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.datetime "deadline_for_registration"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.boolean "status"
+    t.boolean "status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["admin_id"], name: "index_elections_on_admin_id"
@@ -52,8 +52,10 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
   create_table "requests", force: :cascade do |t|
     t.bigint "request_sender_id"
     t.bigint "request_receiver_id"
+    t.bigint "election_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_requests_on_election_id"
     t.index ["request_receiver_id"], name: "index_requests_on_request_receiver_id"
     t.index ["request_sender_id"], name: "index_requests_on_request_sender_id"
   end

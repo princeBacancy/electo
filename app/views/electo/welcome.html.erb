@@ -1,11 +1,34 @@
 <% if !current_user %>
     <h2>Welcome to electo</h2>
     <h4>You need to <%= link_to "sign_in", new_user_session_path%> or <%= link_to "sign_up", new_user_registration_path%></h4>
-    <%=Rails.application.credentials.email%>
 <% else %>
-    <p>Welcome to electo <%= current_user.user_name%></p>
-    <%= link_to "logout", destroy_user_session_path, method: "delete" %><br/>
-    <%= link_to "edit profile", edit_user_registration_path %>
+    <div>
+        <p>Welcome to electo <%= current_user.user_name%></p>
+        <%= link_to "logout", destroy_user_session_path, method: "delete" %><br/>
+        <%= link_to "edit profile", edit_user_registration_path %><br/>
+    </div>
+    
+    <div>
+        <%= link_to "create election", new_election_path %>
+    </div>
+
+    <div>
+        <% @elections.each do |election| %>
+            <div>
+                <h3><%= election.title %></h3><br/>
+                <%= election.description %><br/>
+                <%= election.deadline_for_registration %><br/>
+                <%= link_to "show", election_path(election.id) %>
+                <% if election.admin_id == current_user.id %>
+                    <%= link_to " | edit", edit_election_path(election.id) %>
+                    <%= link_to " | delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%>
+                <% end %>
+            </div>
+            <br/>
+            <br/>
+        <% end %>
+    </div>
+
 <% end %>
 
 

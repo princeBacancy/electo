@@ -65,7 +65,7 @@ Rails.application.configure do
 
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
-
+#EDITOR="vi" rails credentials:edit
 :user_name => Rails.application.credentials.email,
 :password => Rails.application.credentials.password,
 :domain => 'gmail.com',
