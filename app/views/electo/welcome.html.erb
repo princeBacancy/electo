@@ -19,7 +19,7 @@
                 <%= election.description %><br/>
                 <%= election.deadline_for_registration %><br/>
                 <%= link_to "show", election_path(election.id) %>
-                <% if election.admin_id == current_user.id %>
+                <% if election.admin_id == current_user.id or current_user.has_role? :super_admin %>
                     <%= link_to " | edit", edit_election_path(election.id) %>
                     <%= link_to " | delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%>
                 <% end %>
