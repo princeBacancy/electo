@@ -14,6 +14,7 @@
 
     <div>
         <% @elections.each do |election| %>
+            <% if election.approval_status %>
             <div>
                 <h3><%= election.title %></h3><br/>
                 <%= election.description %><br/>
@@ -24,8 +25,8 @@
                     <%= link_to " | delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%>
                 <% end %>
             </div>
-            <br/>
-            <br/>
+            <br/><br/>
+            <% end %>
         <% end %>
     </div>
 

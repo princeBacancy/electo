@@ -9,6 +9,12 @@ require("@rails/activestorage").start()
 require("channels")
 require("jquery")
 
+import "bootstrap"
+import "../stylesheets/application"
+// document.addEventListener("turbolinks:load", () => {
+
+// })
+
 require("packs/election")
 
 // Uncomment to copy all static images under ../images to the output folder and reference

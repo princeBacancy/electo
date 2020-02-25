@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.boolean "status", default: false
+    t.boolean "approval_status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["admin_id"], name: "index_elections_on_admin_id"
