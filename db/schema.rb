@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.bigint "request_sender_id"
     t.bigint "request_receiver_id"
     t.bigint "election_id"
+    t.string "purpose"
+    t.boolean "status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["election_id"], name: "index_requests_on_election_id"
