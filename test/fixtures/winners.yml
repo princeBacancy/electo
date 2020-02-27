@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  election: one
+  election_data: one
+
+two:
+  election: two
+  election_data: two

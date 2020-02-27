@@ -1,0 +1,54 @@
+<table class="table">
+    <h3>send requests</h3>
+        <thead>
+            <tr>
+                <th scope="col">election</th> 
+                <th scope="col">request for</th>
+                <th scope="col">status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% @requests.each do |request| %>
+            <% if request.request_sender == current_user or current_user.has_role? :super_admin %>
+                <tr>
+                    <td><%= request.election.title %></td>
+                    <td><%= request.purpose %></td>
+                    <% if !request.status %>
+                        <td>pending</td>
+                    <% else %>
+                        <td>approved</td>
+                    <% end %>
+                    <td><%= link_to "delete", delete_request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
+
+<table class="table">
+    <h3>received requests</h3>
+        <thead>
+            <tr>
+                <th scope="col">election</th> 
+                <th scope="col">request for</th>
+                <th scope="col">status</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        <% @requests.each do |request| %>
+            <% if request.request_receiver == current_user %>
+                <tr>
+                    <td><%= request.election.title %></td>
+                    <td><%= request.purpose %></td>
+                    <% if !request.status %>
+                        <td>pending</td>
+                        <td><%= link_to "approve", approve_request_path(request.id) %></td>
+                    <% else %>
+                        <td>approved</td>
+                    <% end %>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>

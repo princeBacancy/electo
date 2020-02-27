@@ -1,0 +1,14 @@
+<h1>Confirm Election</h1>
+
+<p>
+  <%= @greeting %>,
+  I am <%= @election.admin.user_name %>.<br/>
+  My election details are,<br/>
+    <b>title: </b> <%= @election.title %><br/>
+    <b>description: </b> <%= @election.description %><br/>
+    <b>deadline_for_registration: </b><%= @election.deadline_for_registration %>.<br/>
+    <br/>
+  I request you to confirm my election.<br/>
+  <br/>
+  confirm at <%= link_to  "this link", election_confirmation_url(@election.id) %>
+</p>

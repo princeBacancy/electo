@@ -27,10 +27,14 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
 
   create_table "elections", force: :cascade do |t|
     t.bigint "admin_id"
-    t.time "deadline_for_registration"
-    t.time "start_time"
-    t.time "end_time"
-    t.boolean "status"
+    t.string "title"
+    t.text "description"
+    t.text "additional_information"
+    t.datetime "deadline_for_registration"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.boolean "status", default: false
+    t.boolean "approval_status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["admin_id"], name: "index_elections_on_admin_id"
@@ -49,8 +53,12 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
   create_table "requests", force: :cascade do |t|
     t.bigint "request_sender_id"
     t.bigint "request_receiver_id"
+    t.bigint "election_id"
+    t.string "purpose"
+    t.boolean "status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_requests_on_election_id"
     t.index ["request_receiver_id"], name: "index_requests_on_request_receiver_id"
     t.index ["request_sender_id"], name: "index_requests_on_request_sender_id"
   end
@@ -71,13 +79,17 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "user_name"
     t.string "first_name"
     t.string "last_name"
     t.string "gender"
-    t.string "birth_date"
+    t.date "birth_date"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
