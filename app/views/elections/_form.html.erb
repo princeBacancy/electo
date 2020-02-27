@@ -1,0 +1,79 @@
+<% javascript_pack_tag "application" %>
+
+<% if flash[:errors] %>
+    <% flash[:errors].each do |e|%>
+        <%= e %>
+    <% end %>
+<% end %>
+
+<script>
+    function min_start_time(){
+        var deadline_for_registration = document.getElementById('election_deadline_for_registration').value
+        var start_time = document.getElementById('election_start_time').value
+
+        var error = document.getElementById('error')
+        condition = new Date(start_time)<new Date(deadline_for_registration)
+        if (condition){
+            error.innerHTML = "start time must be greater than deadline for registration"
+            document.getElementById("submit").disabled = true;
+        }
+        else{
+            error.innerHTML = ""
+            document.getElementById("submit").disabled = false;
+        }
+    }
+
+    function min_end_time(){
+        var end_time = document.getElementById('election_end_time').value
+        var start_time = document.getElementById('election_start_time').value
+
+        var error = document.getElementById('error')
+        condition = new Date(end_time)<new Date(start_time)
+        if (condition){
+            error.innerHTML = "end time must be greater than start_time"
+            document.getElementById("submit").disabled = true;
+        }
+        else{
+            error.innerHTML = ""
+            document.getElementById("submit").disabled = false;
+        }
+    }
+</script>
+
+<%= form_with model:@election do |f| %>
+    <div>
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+    </div>
+
+    <div>
+        <%= f.label :description %><br/>
+        <%= f.text_area :description %>
+    </div>
+
+    <div>
+        <%= f.label :additional_information %>
+        <%= f.text_field :additional_information %>
+    </div>
+
+    <div>
+        <%= f.label :deadline_for_registration %>
+        <%= f.datetime_local_field :deadline_for_registration, min:DateTime.now.change(:sec => 0), max:DateTime.current+1.year %>
+    </div>
+
+    <div>
+        <%= f.label :start_time %>
+        <%= f.datetime_local_field :start_time, min:DateTime.now.change(:sec => 0), max:DateTime.current+1.year, onchange:"min_start_time()"%>
+    </div>
+
+    <div>
+        <%= f.label :end_time %>
+        <%= f.datetime_local_field :end_time, min:DateTime.now.change(:sec => 0), max:DateTime.now+1.year, onchange:"min_end_time()" %>
+    </div>
+
+    <div>
+        <%= f.submit "submit", id: "submit"%>
+    </div>
+
+    <div style="color:red" id="error"></div>
+<% end %>
