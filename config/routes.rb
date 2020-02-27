@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   delete "request/:id/delete" => "requests#destroy", as: "delete_request"
   get "request/:id" => "requests#index", as: "requests"
   get "request/:id/:type" => "requests#new", as: "request"
-
+  post "request/import_voters/:id" => "requests#import_voters",as: "import_voters"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

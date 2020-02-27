@@ -31,6 +31,13 @@
 <%
 =end%>
         </button>
+        <br/>
+        <%= form_tag import_voters_path(@election.id), multipart: true do %>
+        Upload .csv file with data of voters: 
+            <%= file_field_tag :file %>
+            <%= submit_tag :upload_voters %>
+        <% end %>
+
     <% else %>
         <button type="button" class="btn btn-light">
             <%= link_to "request to be voter", request_path(@election.id,"voter")%>
