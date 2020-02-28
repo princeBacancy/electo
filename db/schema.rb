@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_28_061107) do
+ActiveRecord::Schema.define(version: 2020_02_28_095118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,12 +50,12 @@ ActiveRecord::Schema.define(version: 2020_02_28_061107) do
     t.index ["message_sender_id"], name: "index_messages_on_message_sender_id"
   end
 
-  create_table "panding_voters", force: :cascade do |t|
+  create_table "pending_voters", force: :cascade do |t|
     t.bigint "election_id", null: false
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["election_id"], name: "index_panding_voters_on_election_id"
+    t.index ["election_id"], name: "index_pending_voters_on_election_id"
   end
 
   create_table "requests", force: :cascade do |t|
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 2020_02_28_061107) do
   end
 
   add_foreign_key "election_data", "elections"
-  add_foreign_key "panding_voters", "elections"
+  add_foreign_key "pending_voters", "elections"
   add_foreign_key "winners", "election_data"
   add_foreign_key "winners", "elections"
 end

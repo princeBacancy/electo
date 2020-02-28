@@ -1,9 +1,13 @@
 class ElectionsController < ApplicationController
-
+    before_action :find_election, except: [:index, :new, :create, :election_params] 
+    
     def index
     
     end
 
+    def find_election
+        @election = Election.find(params[:id])
+    end
     def new
         @election = Election.new
     end
@@ -22,16 +26,12 @@ class ElectionsController < ApplicationController
     end
 
     def show
-        @election = Election.find(params[:id])
     end
 
     def edit
-        @election = Election.find(params[:id])
     end
 
     def update
-        @election = Election.find(params[:id])
-        
         if @election.update(election_params)
             redirect_to :root
         else
@@ -41,7 +41,6 @@ class ElectionsController < ApplicationController
     end
 
     def confirm
-        @election = Election.find(params[:id])
         @election.update(approval_status:1)
         ConfirmedElectionMailer.confirmed(@election).deliver
         if current_user and current_user.has_role? :super_admin
@@ -51,11 +50,24 @@ class ElectionsController < ApplicationController
     end
 
     def destroy
-        @election = Election.find(params[:id])
         @election.destroy
         redirect_to :root
     end
 
+    def start
+        @election.update(status: 1)
+        redirect_to live_election_path
+    end
+
+    def end
+        @election.update(status: 0)
+        redirect_to result_election_path
+    end
+    
+    def result
+    end
+
+    private
     def election_params
         params.require("election").permit(:title, :description, :additional_information, :deadline_for_registration, :start_time, :end_time)
     end

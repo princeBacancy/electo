@@ -5,5 +5,5 @@ class Election < ApplicationRecord
   has_many :election_data
   has_one :winner
   has_many :requests
-  has_many :panding_voters
+  has_many :pending_voters, dependent: :destroy
 end

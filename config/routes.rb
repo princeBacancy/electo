@@ -4,7 +4,14 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  resources :elections
+  resources :elections do
+    member do
+      get :start
+      get :end   
+      get :live
+      get :result
+    end
+  end
 
   get "election/confirmation/:id" => "elections#confirm", as: "election_confirmation"
   get "request/approve/:id" => "requests#approve", as: "approve_request"

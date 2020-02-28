@@ -8,14 +8,16 @@ class Request < ApplicationRecord
     CSV.foreach(file.path, headers: true) do |row|
       email = row.to_hash["email"]
       user = User.find_by(email: email)
-      panding_voter = PandingVoter.find_by(election_id: election.id, email: email)
+      pending_voter = PendingVoter.find_by(election_id: election.id, email: email)
       
       request = Request.find_by(request_sender_id: user.id, request_receiver_id: election.admin.id, election_id: election.id, purpose: "voter") if user
-      byebug
+      
       if user and !request
-        Request.create(request_sender_id: user.id, request_receiver_id: election.admin.id, election_id: election.id, purpose: "voter", status: true)
-      elsif !user and !panding_voter
-        PandingVoter.create(election_id: election.id, email: email)
+        request = Request.new(request_sender_id: user.id, request_receiver_id: election.admin.id, election_id: election.id, purpose: "voter", status: true)
+        request.save
+        VotingPermissionMailer.voting_permission(request).deliver
+      elsif !user and !pending_voter
+        PendingVoter.create(election_id: election.id, email: email)
       end
     end
   end

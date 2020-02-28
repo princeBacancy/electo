@@ -10,14 +10,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.add_role :user
 
     #giving initial permissions
-    panding_voter = PandingVoter.find_by(email: @user.email)
-    byebug
-    if panding_voter
-      byebug
-      Request.create(request_sender_id: @user.id, request_receiver_id: panding_voter.election.admin_id,
-      election_id: panding_voter.election.id, purpose: "voter", status:true)
-      panding_voter.destroy
-      byebug
+    pending_voter = PendingVoter.find_by(email: @user.email)
+    
+    if pending_voter
+      request = Request.new(request_sender_id: @user.id, request_receiver_id: pending_voter.election.admin_id,
+      election_id: pending_voter.election.id, purpose: "voter", status:true)
+      request.save
+      pending_voter.destroy
+      VotingPermissionMailer.voting_permission(request).deliver  
     end
 
   end

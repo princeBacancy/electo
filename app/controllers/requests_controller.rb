@@ -1,4 +1,6 @@
 class RequestsController < ApplicationController
+    before_action :find_request, only: [:approve, :destroy]
+
     def index
         @requests = Request.all
     end
@@ -25,7 +27,6 @@ class RequestsController < ApplicationController
     end
 
     def approve
-        @request = Request.find(params[:id])
         @request.update(status: true)
         RequestConfirmedMailer.request_confirmed(@request).deliver
         if current_user and current_user.id == @request.election.admin_id
@@ -35,7 +36,6 @@ class RequestsController < ApplicationController
     end
 
     def destroy
-        @request = Request.find(params[:id])
         @request.destroy
         flash[:status] = "deleted successfuly"
         redirect_to requests_path(current_user.id)
@@ -45,6 +45,10 @@ class RequestsController < ApplicationController
         Request.import(params[:file], params[:id])
         flash[:status] = "voters added successfully!!!"#, user does not exist: #{@user_does_not_exist}"
         redirect_to requests_path(current_user.id)
+    end
+
+    def find_request
+        @request = Request.find(params[:id])
     end
 
 end
