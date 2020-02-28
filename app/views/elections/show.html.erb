@@ -1,51 +1,63 @@
 <div>
-    <h2><%= @election.title %></h2>
-    <p><b>description:</b> <%= @election.description %></p>
-    <p><b>additional information:</b><%= @election.additional_information %></p>
-    <p><b>deadline for registration:</b><%= @election.deadline_for_registration %></p>
-    <p><b>start time:</b>election will start around <%= @election.start_time %></p>
-    <p><b>end time:</b>election eill end around <%= @election.end_time %></p>
-    <p><b>status:</b>
-        <% if @election.status %>
-            <span style="color:green">Live</span>
-        <% else %>
-            <span style="color:#FFBB00">Suspended</span>
-        <% end %>
-    </p>
+  <h2><%= @election.title %></h2>
+  <p><b>description:</b> <%= @election.description %></p>
+  <p><b>additional information:</b><%= @election.additional_information %></p>
+  <p><b>deadline for registration:</b><%= @election.deadline_for_registration %></p>
+  <p><b>start time:</b>election will start around <%= @election.start_time %></p>
+  <p><b>end time:</b>election eill end around <%= @election.end_time %></p>
+  <p><b>status:</b>
+    <% if @election.status %>
+      <span style="color:green">Live</span>
+    <% else %>
+      <span style="color:#FFBB00">Suspended</span>
+    <% end %>
+  </p>
 </div>
 
 <div>
-    <% if current_user.id == @election.admin_id %>
-        <button type="button" class="btn btn-success">
-            <%
+  <% if current_user.id == @election.admin_id %>
+    <button type="button" class="btn btn-success">
+        <%
 =begin%>
- <%= link_to "start election", request_path(@election.id)%> 
+<%= link_to "start election", request_path(@election.id)%> 
 <%
 =end%>
-        </button>
+    </button>
 
-        <button type="button" class="btn btn-danger">
-            <%
+    <button type="button" class="btn btn-danger">
+        <%
 =begin%>
- <%= link_to "terminate election", request_path(@election.id)%><br/> 
+<%= link_to "terminate election", request_path(@election.id)%><br/> 
 <%
 =end%>
-        </button>
-        <br/>
-        <%= form_tag import_voters_path(@election.id), multipart: true do %>
-        Upload .csv file with data of voters: 
-            <%= file_field_tag :file %>
-            <%= submit_tag :upload_voters %>
+    </button>
+    
+    <br/><br/>
+    <div>
+      <%= form_tag import_voters_path(@election.id), multipart: true do %>
+      Upload .csv file with data of voters: 
+          <%= file_field_tag :file ,required: true%>
+          <%= submit_tag :upload_voters %>
+      <% end %>
+    </div>
+    <br/>
+    <div>
+      <% if panding_voters = PandingVoter.where(election_id: @election.id) %>
+        <b> Panding Voters are below </b><br/> 
+        <% panding_voters.each do |pv| %>
+            <%= pv.email %><br/>
         <% end %>
+      <% end %>
+    </div>
 
-    <% else %>
-        <button type="button" class="btn btn-light">
-            <%= link_to "request to be voter", request_path(@election.id,"voter")%>
-        </button>
+  <% else %>
+    <button type="button" class="btn btn-light">
+      <%= link_to "request to be voter", request_path(@election.id,"voter")%>
+    </button>
 
-        <button type="button" class="btn btn-dark">
-            <%= link_to "request to be candidate", request_path(@election.id,"candidate")%><br/>
-        </button>
-    <% end %>
+    <button type="button" class="btn btn-dark">
+      <%= link_to "request to be candidate", request_path(@election.id,"candidate")%><br/>
+    </button>
+  <% end %>
 
 </div>

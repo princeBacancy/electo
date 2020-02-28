@@ -29,6 +29,7 @@
     <h3>received requests</h3>
         <thead>
             <tr>
+                <th scope="col">sender</th>
                 <th scope="col">election</th> 
                 <th scope="col">request for</th>
                 <th scope="col">status</th>
@@ -39,6 +40,7 @@
         <% @requests.each do |request| %>
             <% if request.request_receiver == current_user %>
                 <tr>
+                    <td><%= request.request_sender.user_name %></td>
                     <td><%= request.election.title %></td>
                     <td><%= request.purpose %></td>
                     <% if !request.status %>

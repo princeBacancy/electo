@@ -42,9 +42,8 @@ class RequestsController < ApplicationController
     end
 
     def import_voters
-        @election = Election.find(params[:id])
-        Request.import(params[:file])
-        flash[:status] = "voters added successfully!!!, user does not exist: #{@user_does_not_exist}"
+        Request.import(params[:file], params[:id])
+        flash[:status] = "voters added successfully!!!"#, user does not exist: #{@user_does_not_exist}"
         redirect_to requests_path(current_user.id)
     end
 
