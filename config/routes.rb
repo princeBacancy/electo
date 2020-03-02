@@ -7,11 +7,12 @@ Rails.application.routes.draw do
   resources :elections do
     member do
       get :start
-      get :end   
-      get :live
-      get :result
+      get :end 
+      post :vote  
     end
   end
+
+  resources :election_data
 
   get "election/confirmation/:id" => "elections#confirm", as: "election_confirmation"
   get "request/approve/:id" => "requests#approve", as: "approve_request"

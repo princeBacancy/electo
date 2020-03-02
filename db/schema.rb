@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_28_095118) do
+ActiveRecord::Schema.define(version: 2020_03_02_070742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_02_28_095118) do
   create_table "election_data", force: :cascade do |t|
     t.bigint "election_id", null: false
     t.bigint "candidate_id"
-    t.integer "votes_count"
+    t.integer "votes_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["candidate_id"], name: "index_election_data_on_candidate_id"
@@ -108,6 +108,15 @@ ActiveRecord::Schema.define(version: 2020_02_28_095118) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "voting_lists", force: :cascade do |t|
+    t.bigint "voter_id"
+    t.bigint "election_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_voting_lists_on_election_id"
+    t.index ["voter_id"], name: "index_voting_lists_on_voter_id"
   end
 
   create_table "winners", force: :cascade do |t|

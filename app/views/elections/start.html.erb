@@ -1,0 +1,24 @@
+<h2>Welcome to <%= @election.title %></h2>
+<i>choose your desired one!!! => <span style="color:red">Note: you can vote only once</span></i>
+
+<% if !VotingList.exists?(voter_id:current_user.id, election_id:@election.id) and @election.status and (Request.exists?(request_sender_id:current_user.id,
+ election_id: @election.id, purpose: "voter", status:1) or current_user == @election.admin) %>   
+    <%= form_with model:@election, url:vote_election_path, method: :post do |f|%>
+        <div class="field">
+            <b><%= f.label :candidates %></b><br />
+            <% @election.election_data.each do |e_data| %>
+                <%= f.radio_button :candidates, e_data.candidate.user_name,id: e_data.candidate.user_name, required:true %>
+                <%=f.label :"#{e_data.candidate.user_name}", e_data.candidate.user_name,for: e_data.candidate.user_name%><br/>
+            <% end %>
+        </div>
+
+        <%= f.submit "Vote"%>
+    <% end %>
+<% elsif @election.status and !Request.exists?(request_sender_id:current_user.id, election_id: @election.id,
+ purpose: "voter", status:1) and current_user != @election.admin%>
+  <h5 style="color:red">Caution!!! => you are not authorized </h5>   
+<% elsif @election.status %> 
+  <h5 style="color:red">Caution!!! => you had already vote for this election</h5>
+<% else %>
+  <h5 style="color:red">Caution!!! => election is not live</h5>
+<% end %>

@@ -1,5 +1,6 @@
 <div>
   <h2><%= @election.title %></h2>
+  <p><b>election admin:</b> <%= @election.admin.user_name %></p>
   <p><b>description:</b> <%= @election.description %></p>
   <p><b>additional information:</b><%= @election.additional_information %></p>
   <p><b>deadline for registration:</b><%= @election.deadline_for_registration %></p>
@@ -41,8 +42,16 @@
         <% end %>
       <% end %>
     </div>
+    <br/>
+    <div>
+      <% if @election.status %>
+        <button type="button" class="btn btn-light">
+          <%= link_to "vote", start_election_path(@election.id)%>
+        </button>
+      <% end %>
+    </div>
 
-  <% elsif current_user %>
+  <% elsif current_user and !@election.status%>
     <button type="button" class="btn btn-light">
       <%= link_to "request to be voter", request_path(@election.id,"voter")%>
     </button>
@@ -50,10 +59,17 @@
     <button type="button" class="btn btn-dark">
       <%= link_to "request to be candidate", request_path(@election.id,"candidate")%><br/>
     </button>
-  
-  <% else %>
+    
+  <% elsif current_user and @election.status and Request.exists?(request_sender_id: current_user.id, election_id: @election.id, purpose: "vote", status: 1)%>
+    <button type="button" class="btn btn-light">
+      <%= link_to "vote", start_election_path(@election.id)%>
+    </button>
+
+  <% elsif !current_user %>
     <%= link_to "signin", new_user_session_path %> | 
     <%= link_to "sign up", new_user_registration_path %>
   <% end %>
+
+  
 
 </div>
