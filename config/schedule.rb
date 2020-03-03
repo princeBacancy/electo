@@ -31,3 +31,6 @@ every 1.minute do
 end
 
 # Learn more: http://github.com/javan/whenever
+#tail -f log/cron_log.log
+#whenever -c
+#whenever --update-crontab

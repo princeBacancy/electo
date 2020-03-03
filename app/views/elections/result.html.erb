@@ -1,0 +1,24 @@
+<h1>LIVE RESULTS</h1>
+<P style="color:orange">if page not refresh automatically after one minute then refresh manually</p>
+<% election_data = ElectionDatum.where(election_id: @election.id)%>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">candidate</th>
+      <th scope="col">votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% election_data.each do |votes| %>
+        <td><%= votes.candidate.user_name %></td>
+        <td><%= votes.votes_count %></td>
+      <% end %>
+    </tr> 
+  </tbody>
+</table>
+<br/>
+<% if !@election.status %>
+  <h4>Winner : </h4>
+<% end %>
+   

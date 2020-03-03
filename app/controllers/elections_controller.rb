@@ -65,6 +65,7 @@ class ElectionsController < ApplicationController
       @candidate_data.update(votes_count: @candidate_data.votes_count + 1)
       @voter = VotingList.create(voter_id: current_user.id, election_id: params[:id])
       flash[:status] = "voted successfully to #{params[:election][:candidates]}"
+      redirect_to result_election_path
     end
   end
 

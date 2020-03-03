@@ -9,11 +9,12 @@ Rails.application.routes.draw do
       get :start
       get :end 
       post :vote  
+      get :result
     end
   end
 
   resources :election_data
-  get 'trigger' => 'elections#trigger'
+
   get "election/confirmation/:id" => "elections#confirm", as: "election_confirmation"
   get "request/approve/:id" => "requests#approve", as: "approve_request"
   delete "request/:id/delete" => "requests#destroy", as: "delete_request"
