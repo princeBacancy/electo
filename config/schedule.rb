@@ -1,3 +1,4 @@
+set :environment, 'development'
 # frozen_string_literal: true
 
 # Use this file to easily define all of your cron jobs.
@@ -7,16 +8,26 @@
 
 # Example:
 #
-# set :output, "/path/to/my/cron_log.log"
-#
+set :output, { error: 'log/cron_error_log.log', standard: 'log/cron_log.log' }
+set :bundle_command, '/usr/local/bin/bundle'
+
+set :env_path,    '"$HOME/.rbenv/shims":"$HOME/.rbenv/bin"'
+
+# doesn't need modifications
+# job_type :command, ":task :output"
+
+job_type :rake,   ' cd :path && PATH=:env_path:"$PATH" RAILS_ENV=:environment bin/rake :task --silent :output '
+job_type :runner, %q( cd :path && PATH=:env_path:"$PATH" bin/rails runner -e :environment ':task' :output )
+job_type :script, ' cd :path && PATH=:env_path:"$PATH" RAILS_ENV=:environment bundle exec bin/:task :output '
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
 #   runner "MyModel.some_method"
 #   rake "some:great:rake:task"
 # end
 #
-every 2.minutes do
-  runner "Winner.banav"
+every 1.minute do
+  runner 'Election.trigger'
+  # rake 'my_test_task'
 end
 
 # Learn more: http://github.com/javan/whenever

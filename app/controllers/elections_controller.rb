@@ -55,7 +55,7 @@ class ElectionsController < ApplicationController
   end
 
   def start
-    @election.update(status: 1) if current_user == @election.admin
+    @election.update(status: 1) if current_user == @election.admin and @election.approval_status
   end
 
   def vote
