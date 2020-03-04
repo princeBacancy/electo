@@ -5,7 +5,7 @@ class CreateRequests < ActiveRecord::Migration[6.0]
       t.references :request_receiver
       t.references :election
       t.string :purpose
-      t.boolean :status, default:0
+      t.integer :status, default:0
 
       t.timestamps
     end

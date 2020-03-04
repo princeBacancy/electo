@@ -1,6 +1,6 @@
 <h1>LIVE RESULTS</h1>
 <P style="color:orange">if page not refresh automatically after one minute then refresh manually</p>
-<% election_data = ElectionDatum.where(election_id: @election.id)%>
+
 <table class="table">
   <thead>
     <tr>
@@ -9,16 +9,22 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <% election_data.each do |votes| %>
-        <td><%= votes.candidate.user_name %></td>
-        <td><%= votes.votes_count %></td>
-      <% end %>
-    </tr> 
+    <% @election_data.each do |votes| %>
+      <tr>
+      <td><%= votes.candidate.user_name %></td>
+      <td><%= votes.votes_count %><%= @x %></td>
+      </tr>   
+    <% end %> 
   </tbody>
 </table>
 <br/>
-<% if !@election.status %>
-  <h4>Winner : </h4>
+<% if @election.status == "suspended" and @election.election_data.exists?%>
+  <% if @winners.count == 1 %>
+  <h4>Winner : <%= @winner.candidate.user_name %></h4>
+  <% elsif %>
+  <h4>Draw Between : </h4><% @winners.each do |winner|%> 
+    <h4> <%= winner.candidate.user_name %> </h4>
+    <% end %>
+  <% end %>
 <% end %>
    

@@ -4,6 +4,7 @@ class Request < ApplicationRecord
   belongs_to :request_sender, class_name: 'User', foreign_key: 'request_sender_id'
   belongs_to :request_receiver, class_name: 'User', foreign_key: 'request_receiver_id'
   belongs_to :election
+  enum status: %i[pending approved rejected]
 
   def self.import(file, election_id)
     election = Election.find(election_id)
@@ -19,7 +20,7 @@ class Request < ApplicationRecord
       
       if user && !request
         request = Request.new(request_sender_id: user.id, request_receiver_id: election.admin.id,
-                              election_id: election.id, purpose: 'voter', status: true)
+                              election_id: election.id, purpose: 'voter', status: :approved)
         request.save
         VotingPermissionMailer.voting_permission(request).deliver
       elsif !user && !pending_voter

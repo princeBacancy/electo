@@ -1,0 +1,8 @@
+<h1>Election Live Notification</h1>
+
+<p>
+  <% puts "mail"%>
+  <%= @greeting %>,
+  Election <%= @election.title %> is live now.
+  You can vote using this link while election is live <%= link_to "VOTE", start_election_url(@election.id) %>
+</p>

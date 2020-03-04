@@ -12,7 +12,7 @@ class RequestsController < ApplicationController
     @election = Election.find(params[:id])
     request = Request.where(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, election_id: @election.id, purpose: params[:type])
 
-    if request.empty?
+    if request.empty? and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M'))
 
       @request = Request.new(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, election_id: @election.id, purpose: params[:type])
       if @request.save
@@ -23,14 +23,18 @@ class RequestsController < ApplicationController
         flash[:status] = 'something went wrong!!!'
         render election_path
       end
-    else
+    elsif !request.empty?
       flash[:status] = 'request already send'
       redirect_to requests_path(current_user.id)
+    else
+      flash[:status] = 'Time Out!!!'
+      redirect_to requests_path(current_user.id)
     end
+
   end
 
   def approve
-    @request.update(status: true)
+    @request.update(status: :approved)
     if @request.purpose == 'candidate'
       ElectionDatum.create(election_id: @request.election_id, candidate_id: @request.request_sender_id)
     end

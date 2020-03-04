@@ -14,7 +14,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if pending_voter
       request = Request.new(request_sender_id: @user.id, request_receiver_id: pending_voter.election.admin_id,
-                            election_id: pending_voter.election.id, purpose: 'voter', status: true)
+                            election_id: pending_voter.election.id, purpose: 'voter', status: :approved)
       request.save
       pending_voter.destroy
       VotingPermissionMailer.voting_permission(request).deliver

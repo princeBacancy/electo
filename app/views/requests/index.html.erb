@@ -13,11 +13,7 @@
                 <tr>
                     <td><%= request.election.title %></td>
                     <td><%= request.purpose %></td>
-                    <% if !request.status %>
-                        <td>pending</td>
-                    <% else %>
-                        <td>approved</td>
-                    <% end %>
+                    <td><%= request.status %></td>
                     <td><%= link_to "delete", delete_request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
                 </tr>
             <% end %>
@@ -43,12 +39,9 @@
                     <td><%= request.request_sender.user_name %></td>
                     <td><%= request.election.title %></td>
                     <td><%= request.purpose %></td>
-                    <% if !request.status %>
-                        <td>pending</td>
-                        <td><%= link_to "approve", approve_request_path(request.id) %></td>
-                    <% else %>
-                        <td>approved</td>
-                    <% end %>
+                    <td><%= request.status %>
+                    <%= link_to "approve", approve_request_path(request.id) if request.status == "pending" %>
+                    </td> 
                 </tr>
             <% end %>
         <% end %>
@@ -69,18 +62,17 @@
             <tbody>
             
             <% @requests.each do |request| %>
+                <% if request.request_receiver != current_user and request.request_sender != current_user%>
                     <tr>
                         <td><%= request.request_sender.user_name %></td>
                         <td><%= request.election.title %></td>
                         <td><%= request.purpose %></td>
-                        <% if !request.status %>
-                            <td>pending</td>
-                            <td><%= link_to "approve", approve_request_path(request.id) %></td>
-                        <% else %>
-                            <td>approved</td>
-                        <% end %>
+                        <td><%= request.status %>
+                        <%= link_to "approve", approve_request_path(request.id) if request.status == "pending" %>
+                        </td>
                     </tr>
-                <% end %>
+                  <% end %>
+            <% end %>
             
         </tbody>
     </table>

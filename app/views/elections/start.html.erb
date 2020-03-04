@@ -1,8 +1,8 @@
 <h2>Welcome to <%= @election.title %></h2>
 <i>choose your desired one!!! => <span style="color:red">Note: you can vote only once</span></i>
 
-<% if @election.approval_status and !VotingList.exists?(voter_id:current_user.id, election_id:@election.id) and @election.status and (Request.exists?(request_sender_id:current_user.id,
- election_id: @election.id, purpose: "voter", status:1) or current_user == @election.admin) %>   
+<% if @election.approval_status == "approved" and !VotingList.exists?(voter_id:current_user.id, election_id:@election.id) and @election.status == "live" and (Request.exists?(request_sender_id:current_user.id,
+ election_id: @election.id, purpose: "voter", status: :approved) or current_user == @election.admin) %>   
     <%= form_with model:@election, url:vote_election_path, method: :post do |f|%>
         <div class="field">
             <b><%= f.label :candidates %></b><br />
@@ -14,12 +14,12 @@
 
         <%= f.submit "Vote"%>
     <% end %>
-<% elsif !@election.approval_status %>
+<% elsif @election.approval_status != "approved" %>
   <h5 style="color:red">Caution!!! =>   election is not permitted to be live </h5>  
-<% elsif @election.status and !Request.exists?(request_sender_id:current_user.id, election_id: @election.id,
- purpose: "voter", status:1) and current_user != @election.admin%>
+<% elsif @election.status  == "live" and !Request.exists?(request_sender_id:current_user.id, election_id: @election.id,
+ purpose: "voter", status: :approved) and current_user != @election.admin%>
   <h5 style="color:red">Caution!!! => you are not authorized </h5>   
-<% elsif @election.status %> 
+<% elsif @election.status == "live" %> 
   <h5 style="color:red">Caution!!! => you had already vote for this election</h5>
 <% else %>
   <h5 style="color:red">Caution!!! => election is not live</h5>

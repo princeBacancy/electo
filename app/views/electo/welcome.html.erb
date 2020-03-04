@@ -29,7 +29,7 @@
     </thead>
     <tbody>
       <% @elections.each do |election| %>
-          <% if election.approval_status or current_user.id == election.admin_id or current_user.has_role? :super_admin%>
+          <% if election.approval_status == "approved" or current_user.id == election.admin_id or current_user.has_role? :super_admin%>
           <tr>
               <td><%= election.title %></td>
               <td><%= election.description %></td>
@@ -39,7 +39,7 @@
                   <td><%= link_to "edit", edit_election_path(election.id) %></td>
                   <td><%= link_to "delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%></td>
                   <td>Approval Status: <b><%= election.approval_status %></b></td>
-                  <% if current_user.has_role? :super_admin and !election.approval_status %>
+                  <% if current_user.has_role? :super_admin and election.approval_status == "pending" %>
                   <td><%= link_to "approve", election_confirmation_path(election.id) %></td>
                   <% end %>
               <% end %>
