@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 class ElectionsController < ApplicationController
@@ -96,4 +97,5 @@ class ElectionsController < ApplicationController
   def election_params
     params.require('election').permit(:title, :description, :additional_information, :deadline_for_registration, :start_time, :end_time)
   end
+
 end

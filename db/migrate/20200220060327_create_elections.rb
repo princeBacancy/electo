@@ -11,6 +11,7 @@ class CreateElections < ActiveRecord::Migration[6.0]
       t.integer :status, default: 0
       t.integer :approval_status, default: 0
 
+
       t.timestamps
     end
   end

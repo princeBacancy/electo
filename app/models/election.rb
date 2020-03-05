@@ -31,3 +31,4 @@ class Election < ApplicationRecord
     end
   end
 end
+
