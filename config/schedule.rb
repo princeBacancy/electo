@@ -11,7 +11,7 @@ set :environment, 'development'
 set :output, { error: 'log/cron_error_log.log', standard: 'log/cron_log.log' }
 set :bundle_command, '/usr/local/bin/bundle'
 
-set :env_path,    '"$HOME/.rbenv/shims":"$HOME/.rbenv/bin"'
+set :env_path,    '"/usr/share/rvm/rubies/ruby-2.7.0/bin/ruby"'
 
 # doesn't need modifications
 # job_type :command, ":task :output"

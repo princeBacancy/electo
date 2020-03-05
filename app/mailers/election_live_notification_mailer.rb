@@ -9,7 +9,6 @@ class ElectionLiveNotificationMailer < ApplicationMailer
     @greeting = "Hi"
     @election = election
     email = voter.request_sender.email
-    puts "mail"
     mail to: email, subject: "notification"
   end
 end

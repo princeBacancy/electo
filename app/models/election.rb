@@ -20,9 +20,9 @@ class Election < ApplicationRecord
       if start_time == DateTime.now.strftime('%d %b %Y %H:%M')
         puts "in if"
         election.update(status: "live")
-        @voters = @election.requests.where(status: :approved)
+        @voters = election.requests.where(status: :approved)
         @voters.each do |voter|
-         ElectionLiveNotificationMailer.notify(voter, @election).deliver
+         ElectionLiveNotificationMailer.notify(voter, election).deliver
         end
       elsif end_time == DateTime.now.strftime('%d %b %Y %H:%M')
         puts "in elsif"

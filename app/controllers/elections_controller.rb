@@ -55,8 +55,8 @@ class ElectionsController < ApplicationController
   end
 
   def start
-    if current_user == @election.admin and @election.approval_status == "approved" and @election.status != "live"
-      @election.update(status: "live")
+    if (current_user == @election.admin) && (@election.approval_status == 'approved') && (@election.status != 'live')
+      @election.update(status: 'live')
       @voters = @election.requests.where(status: :approved)
       @voters.each do |voter|
         ElectionLiveNotificationMailer.notify(voter, @election).deliver
@@ -65,7 +65,7 @@ class ElectionsController < ApplicationController
   end
 
   def vote
-    if !VotingList.exists?(voter_id: current_user.id, election_id: @election.id) && @election.status == "live"
+    if !VotingList.exists?(voter_id: current_user.id, election_id: @election.id) && @election.status == 'live'
       @candidate = User.find_by(user_name: params[:election][:candidates])
       @candidate_data = ElectionDatum.find_by(candidate_id: @candidate.id, election_id: params[:id])
       @candidate_data.update(votes_count: @candidate_data.votes_count + 1)
@@ -76,15 +76,15 @@ class ElectionsController < ApplicationController
   end
 
   def end
-    @election.update(status: :suspended) if current_user == @election.admin 
+    @election.update(status: :suspended) if current_user == @election.admin
     redirect_to result_election_path(@election.id)
   end
 
   def result
     @election_data = ElectionDatum.where(election_id: @election.id)
-    if @election.status == "suspended" and @election.election_data.exists?     
-      @winner = @election_data.order("votes_count DESC").first
-      @winners = @election_data.where(votes_count: @winner.votes_count) 
+    if (@election.status == 'suspended') && @election.election_data.exists?
+      @winner = @election_data.order('votes_count DESC').first
+      @winners = @election_data.where(votes_count: @winner.votes_count)
       @winners.each do |winner|
         Winner.create(election_id: @election.id, election_datum_id: winner.id)
       end
