@@ -1,50 +1,9 @@
-// document.addEventListener("turbolinks:load", () => {
-//     const election_deadline_for_registration = document.getElementById("election_deadline_for_registration");
-//     election_deadline_for_registration.addEventListener("change", check(election_deadline_for_registration));
-// })
-
-// function check(election_deadline_for_registration) {
-
-//     alert(election_deadline_for_registration.value)
-//     console.log(election_deadline_for_registration.value)
-// }
 
 // document.addEventListener("turbolinks:load", () => {
 //     alert("alert");
 // })
 
-// <
-// script >
-//     function min_start_time() {
-//         var deadline_for_registration = document.getElementById('election_deadline_for_registration').value
-//         var start_time = document.getElementById('election_start_time').value
 
-//         var error = document.getElementById('error')
-//         condition = new Date(start_time) < new Date(deadline_for_registration)
-//         if (condition) {
-//             error.innerHTML = "start time must be greater than deadline for registration"
-//             document.getElementById("submit").disabled = true;
-//         } else {
-//             error.innerHTML = ""
-//             document.getElementById("submit").disabled = false;
-//         }
-//     }
-
-// function min_end_time() {
-//     var end_time = document.getElementById('election_end_time').value
-//     var start_time = document.getElementById('election_start_time').value
-
-//     var error = document.getElementById('error')
-//     condition = new Date(end_time) < new Date(start_time)
-//     if (condition) {
-//         error.innerHTML = "end time must be greater than start_time"
-//         document.getElementById("submit").disabled = true;
-//     } else {
-//         error.innerHTML = ""
-//         document.getElementById("submit").disabled = false;
-//     }
-// } <
-// /script>
 //alert('<%= j DateTime.now %>');
 $(document).ready(function() {  
     $('#start_time').change(function() {
