@@ -9,6 +9,7 @@
         </thead>
         <tbody>
         <% @requests.each do |request| %>
+
             <% if request.request_sender == current_user %>
                 <tr>
                     <td><%= request.election.title %></td>
@@ -36,6 +37,7 @@
         <% @requests.each do |request| %>
             <% if request.request_receiver == current_user %>
                 <tr>
+
                     <td><%= request.request_sender.user_name %></td>
                     <td><%= request.election.title %></td>
                     <td><%= request.purpose %></td>
@@ -46,6 +48,7 @@
             <% end %>
         <% end %>
     </tbody>
+
 </table>
 
 <% if current_user.has_role? :super_admin %>

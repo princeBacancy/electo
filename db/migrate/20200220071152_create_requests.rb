@@ -7,6 +7,7 @@ class CreateRequests < ActiveRecord::Migration[6.0]
       t.string :purpose
       t.integer :status, default:0
 
+
       t.timestamps
     end
   end

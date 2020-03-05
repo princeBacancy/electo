@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 class Request < ApplicationRecord
@@ -29,4 +30,5 @@ class Request < ApplicationRecord
       end
     end
   end
+
 end

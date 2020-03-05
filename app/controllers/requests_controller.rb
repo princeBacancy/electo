@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 class RequestsController < ApplicationController
@@ -60,4 +61,5 @@ class RequestsController < ApplicationController
   def find_request
     @request = Request.find(params[:id])
   end
+
 end
