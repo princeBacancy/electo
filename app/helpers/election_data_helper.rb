@@ -1,0 +1,2 @@
+module ElectionDataHelper
+end

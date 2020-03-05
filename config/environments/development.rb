@@ -5,10 +5,12 @@ Rails.application.configure do
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
-  config.hosts << "5c3faf1c.ngrok.io"
+
+  # config.hosts << "1561efbb.ngrok.io"
   # Do not eager load code on boot.
   config.eager_load = false
-  config.action_mailer.default_url_options = { host: '5c3faf1c.ngrok.io'}
+  config.action_mailer.default_url_options = { host: '127.0.0.1', port: '3000'}
+
 
   # Show full error reports.
   config.consider_all_requests_local = true

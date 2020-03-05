@@ -3,10 +3,22 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  after_action :assign_default_role, only: [:create]
+  after_action :assign_default_role_and_permissions, only: [:create]
 
-  def assign_default_role
+  def assign_default_role_and_permissions
+    # adding role
     @user.add_role :user
+
+    # giving initial permissions
+    pending_voter = PendingVoter.find_by(email: @user.email)
+
+    if pending_voter
+      request = Request.new(request_sender_id: @user.id, request_receiver_id: pending_voter.election.admin_id,
+                            election_id: pending_voter.election.id, purpose: 'voter', status: :approved)
+      request.save
+      pending_voter.destroy
+      VotingPermissionMailer.voting_permission(request).deliver
+    end
   end
   # GET /resource/sign_up
   # def new

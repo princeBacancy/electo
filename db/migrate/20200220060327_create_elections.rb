@@ -8,8 +8,9 @@ class CreateElections < ActiveRecord::Migration[6.0]
       t.datetime :deadline_for_registration
       t.datetime :start_time
       t.datetime :end_time
-      t.boolean :status, default: 0
-      t.boolean :approval_status, default: 0
+      t.integer :status, default: 0
+      t.integer :approval_status, default: 0
+
 
       t.timestamps
     end

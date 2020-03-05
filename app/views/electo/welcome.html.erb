@@ -15,50 +15,38 @@
     <div>
         <%= link_to "create election", new_election_path %>
     </div>
-
-    <div>
-        <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Deadline For Registration</th>
-            <th scope="col">Show</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-            <%
-=begin%>
- <% if current_user.id == election.admin_id or current_user.has_role? :super_admin%>
-            <th scope="col">Approval Status</th>
-            <% end %> 
-<%
-=end%>
-        </tr>
-        </thead>
-        <tbody>
-        <% @elections.each do |election| %>
-            <% if election.approval_status or current_user.id == election.admin_id or current_user.has_role? :super_admin%>
-            <tr>
-                <td><%= election.title %></td>
-                <td><%= election.description %></td>
-                <td><%= election.deadline_for_registration %></td>
-                <td><%= link_to "show", election_path(election.id) %></td>
-                <% if election.admin_id == current_user.id or current_user.has_role? :super_admin %>
-                    <td><%= link_to "edit", edit_election_path(election.id) %></td>
-                    <td><%= link_to "delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%></td>
-                    <td>Approval Status: <b><%= election.approval_status %></b></td>
-                    <% if current_user.has_role? :super_admin and !election.approval_status %>
-                    <td><%= link_to "approve", election_confirmation_path(election.id) %>
-                    <% end %>
-                <% end %>
-            </div>
-            <br/><br/>
-            <% end %>
-        <% end %>
-        </tbody>
-        </table>
-    </div>
-
+    <table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Deadline For Registration</th>
+        <th scope="col">Show</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+    </tr>    
+    </thead>
+    <tbody>
+      <% @elections.each do |election| %>
+          <% if election.approval_status == "approved" or current_user.id == election.admin_id or current_user.has_role? :super_admin%>
+          <tr>
+              <td><%= election.title %></td>
+              <td><%= election.description %></td>
+              <td><%= election.deadline_for_registration %></td>
+              <td><%= link_to "show", election_path(election.id), id:"id"%></td>
+              <% if election.admin_id == current_user.id or current_user.has_role? :super_admin %>
+                  <td><%= link_to "edit", edit_election_path(election.id) %></td>
+                  <td><%= link_to "delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"}%></td>
+                  <td>Approval Status: <b><%= election.approval_status %></b></td>
+                  <% if current_user.has_role? :super_admin and election.approval_status == "pending" %>
+                  <td><%= link_to "approve", election_confirmation_path(election.id) %></td>
+                  <% end %>
+              <% end %>
+          </tr>
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
 <% end %>
 
 

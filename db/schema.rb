@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_20_083712) do
+ActiveRecord::Schema.define(version: 2020_03_02_070742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
   create_table "election_data", force: :cascade do |t|
     t.bigint "election_id", null: false
     t.bigint "candidate_id"
-    t.integer "votes_count"
+    t.integer "votes_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["candidate_id"], name: "index_election_data_on_candidate_id"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.datetime "deadline_for_registration"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.boolean "status", default: false
-    t.boolean "approval_status", default: false
+    t.integer "status", default: 0
+    t.integer "approval_status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["admin_id"], name: "index_elections_on_admin_id"
@@ -50,12 +50,20 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.index ["message_sender_id"], name: "index_messages_on_message_sender_id"
   end
 
+  create_table "pending_voters", force: :cascade do |t|
+    t.bigint "election_id", null: false
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_pending_voters_on_election_id"
+  end
+
   create_table "requests", force: :cascade do |t|
     t.bigint "request_sender_id"
     t.bigint "request_receiver_id"
     t.bigint "election_id"
     t.string "purpose"
-    t.boolean "status", default: false
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["election_id"], name: "index_requests_on_election_id"
@@ -102,6 +110,15 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "voting_lists", force: :cascade do |t|
+    t.bigint "voter_id"
+    t.bigint "election_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_voting_lists_on_election_id"
+    t.index ["voter_id"], name: "index_voting_lists_on_voter_id"
+  end
+
   create_table "winners", force: :cascade do |t|
     t.bigint "election_id", null: false
     t.bigint "election_datum_id", null: false
@@ -112,6 +129,7 @@ ActiveRecord::Schema.define(version: 2020_02_20_083712) do
   end
 
   add_foreign_key "election_data", "elections"
+  add_foreign_key "pending_voters", "elections"
   add_foreign_key "winners", "election_data"
   add_foreign_key "winners", "elections"
 end
