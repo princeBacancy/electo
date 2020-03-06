@@ -10,12 +10,12 @@ class RequestsController < ApplicationController
   end
 
   def new
-    @election = Election.find(params[:id])
-    request = Request.where(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, election_id: @election.id, purpose: params[:type])
+    @election = Election.includes(:requests)find(params[:id])
+    request = @election.requests.where(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, purpose: params[:type])
 
     if request.empty? and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M'))
 
-      @request = Request.new(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, election_id: @election.id, purpose: params[:type])
+      @request = @election.requests.build(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, purpose: params[:type])
       if @request.save
         flash[:status] = 'request send to election admin!!!'
         RequestConfirmMailer.request_confirm(@request).deliver
@@ -35,26 +35,28 @@ class RequestsController < ApplicationController
   end
 
   def approve
-    @request.update(status: :approved)
-    if @request.purpose == 'candidate'
-      ElectionDatum.create(election_id: @request.election_id, candidate_id: @request.request_sender_id)
-    end
-    RequestConfirmedMailer.request_confirmed(@request).deliver
-    if current_user && (current_user.id == @request.election.admin_id)
-      flash[:status] = 'request approved!!!'
-      redirect_to requests_path(current_user.id)
+    if @request.update(status: :approved)
+      if @request.purpose == 'candidate'
+        ElectionDatum.create(election_id: @request.election_id, candidate_id: @request.request_sender_id)
+      end
+      RequestConfirmedMailer.request_confirmed(@request).deliver
+      if current_user && (current_user.id == @request.election.admin_id)
+        flash[:status] = 'request approved!!!'
+        redirect_to requests_path(current_user.id)
+      end
     end
   end
 
   def destroy
-    @request.destroy
-    flash[:status] = 'deleted successfuly'
-    redirect_to requests_path(current_user.id)
+    if @request.destroy
+      flash[:status] = 'deleted successfuly'
+      redirect_to requests_path(current_user.id)
+    end
   end
 
   def import_voters
     Request.import(params[:file], params[:id])
-    flash[:status] = 'voters added successfully!!!' # , user does not exist: #{@user_does_not_exist}"
+    flash[:status] = 'voters added successfully!!!'
     redirect_to requests_path(current_user.id)
   end
 
