@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ElectionsController < ApplicationController
-  before_action :find_election, except: %i[index new create election_params result vote start]
+  before_action :find_election, only: %i[edit update confirm destroy end]
   before_action :authenticate_user!
 
   def index; end
@@ -27,7 +27,9 @@ class ElectionsController < ApplicationController
     end
   end
 
-  def show; end
+  def show 
+    @election = Election.includes(:pending_voters, :requests).find(params[:id])
+  end
 
   def edit; end
 
@@ -56,7 +58,7 @@ class ElectionsController < ApplicationController
   end
 
   def start
-    @election = Election.includes(:requests).find(params[:id])
+    @election = Election.includes(:requests, :voters, election_data: [:candidate]).find(params[:id])
     if (current_user == @election.admin) && (@election.approval_status == 'approved') && (@election.status != 'live')
       @election.update(status: 'live')
       @voters = @election.requests.where(status: :approved)

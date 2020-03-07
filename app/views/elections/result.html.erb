@@ -27,10 +27,10 @@
 <br/>
 <% if @election.status == "suspended" and @election.election_data.exists?%>
   <% if @winners_data.count == 1 %>
-    <h4>Winner : <%= @winners_data.user_name %></h4>
+    <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
   <% elsif %>
     <h4>Draw Between : </h4><% @winners_data.each do |winner|%> 
-      <h4> <%= winner.user_name %> </h4>
+      <h4> <%= winner.candidate.user_name %> </h4>
      <% end %>
     <% end %>
 <% end %>
