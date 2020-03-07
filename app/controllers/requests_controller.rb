@@ -2,20 +2,19 @@
 # frozen_string_literal: true
 
 class RequestsController < ApplicationController
-  before_action :find_request, only: %i[approve destroy]
   before_action :authenticate_user!
 
   def index
-    @requests = Request.all
+    @requests = Request.includes(:request_sender, election: [:admin]).all
   end
 
   def new
-    @election = Election.includes(:requests)find(params[:id])
-    request = @election.requests.where(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, purpose: params[:type])
+    @election = Election.includes(:requests).find(params[:id])
+    request = @election.requests.where(request_sender_id: current_user.id, purpose: params[:type])
 
     if request.empty? and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M'))
 
-      @request = @election.requests.build(request_sender_id: current_user.id, request_receiver_id: @election.admin_id, purpose: params[:type])
+      @request = @election.requests.build(request_sender_id: current_user.id, purpose: params[:type])
       if @request.save
         flash[:status] = 'request send to election admin!!!'
         RequestConfirmMailer.request_confirm(@request).deliver
@@ -31,13 +30,13 @@ class RequestsController < ApplicationController
       flash[:status] = 'Time Out!!!'
       redirect_to requests_path(current_user.id)
     end
-
   end
 
   def approve
+    @request = Request.includes(:election).find(params[:id])
     if @request.update(status: :approved)
       if @request.purpose == 'candidate'
-        ElectionDatum.create(election_id: @request.election_id, candidate_id: @request.request_sender_id)
+        @request.election.election_data.build(candidate_id: @requset.request_sender_id).save
       end
       RequestConfirmedMailer.request_confirmed(@request).deliver
       if current_user && (current_user.id == @request.election.admin_id)
@@ -48,6 +47,7 @@ class RequestsController < ApplicationController
   end
 
   def destroy
+    @request = Request.find(params[:id])
     if @request.destroy
       flash[:status] = 'deleted successfuly'
       redirect_to requests_path(current_user.id)
@@ -59,9 +59,4 @@ class RequestsController < ApplicationController
     flash[:status] = 'voters added successfully!!!'
     redirect_to requests_path(current_user.id)
   end
-
-  def find_request
-    @request = Request.find(params[:id])
-  end
-
 end

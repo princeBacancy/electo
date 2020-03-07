@@ -60,14 +60,12 @@ ActiveRecord::Schema.define(version: 2020_03_02_070742) do
 
   create_table "requests", force: :cascade do |t|
     t.bigint "request_sender_id"
-    t.bigint "request_receiver_id"
     t.bigint "election_id"
     t.string "purpose"
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["election_id"], name: "index_requests_on_election_id"
-    t.index ["request_receiver_id"], name: "index_requests_on_request_receiver_id"
     t.index ["request_sender_id"], name: "index_requests_on_request_sender_id"
   end
 
