@@ -7,8 +7,9 @@ class Election < ApplicationRecord
   has_many :requests, dependent: :destroy
   has_many :pending_voters, dependent: :destroy
   has_many :voters, class_name: 'VotingList', foreign_key: 'election_id', dependent: :destroy
-  enum status: %i[waiting live suspended] 
+  enum status: %i[live waiting suspended] 
   enum approval_status: %i[pending approved rejected]
+  scope :order_by_status, -> {order(:status)}
 
   def self.trigger
     puts "in trigger"

@@ -1,79 +1,83 @@
-<div>
-  <h2><%= @election.title %></h2>
-  <p><b>election admin:</b> <%= @election.admin.user_name %></p>
-  <p><b>description:</b> <%= @election.description %></p>
-  <p><b>additional information:</b><%= @election.additional_information %></p>
-  <p><b>deadline for registration:</b><%= @election.deadline_for_registration %></p>
-  <p><b>start time:</b>election will start around <%= @election.start_time %></p>
-  <p><b>end time:</b>election eill end around <%= @election.end_time %></p>
-  <p><b>status:</b>
-    <% if @election.status == "live" %>
-      <span style="color:green">Live</span>
-    <% elsif @election.status == "waiting" %>
-      <span style="color:darkblue">Waiting</span>
-    <% else %>
-      <span style="color:red">Suspended</span>
-    <% end %>
-  </p>
-</div>
+<%= stylesheet_link_tag 'election_show', media: 'all', 'data-turbolinks-track': 'reload' %>
+<div class="outer">
+  <div></div>
+  <div class="inner">  
+  <div>
+    <h2><%= @election.title %></h2>
+    <p><b>election admin:</b> <%= @election.admin.user_name %></p>
+    <p><b>description:</b> <%= @election.description %></p>
+    <p><b>additional information:</b><%= @election.additional_information %></p>
+    <p><b>deadline for registration:</b><%= @election.deadline_for_registration %></p>
+    <p><b>start time:</b>election will start around <%= @election.start_time %></p>
+    <p><b>end time:</b>election eill end around <%= @election.end_time %></p>
+    <p><b>status:</b>
+      <% if @election.status == "live" %>
+        <span style="color:green">Live</span>
+      <% elsif @election.status == "waiting" %>
+        <span style="color:darkblue">Waiting</span>
+      <% else %>
+        <span style="color:red">Suspended</span>
+      <% end %>
+    </p>
+  </div>
 
-<div>
-  <% if current_user.id == @election.admin_id %>
-    <button type="button" class="btn btn-success">
-      <%= link_to "start election",   start_election_path(@election.id)%> 
-    </button>
-    <button type="button" class="btn btn-danger">
-      <%= link_to "terminate election", end_election_path(@election.id)%><br/> 
-    </button>
-    
-    <br/><br/>
-    <div>
-      <%= form_tag import_voters_path(@election.id), multipart: true do %>
-      Upload .csv file with data of voters: 
-          <%= file_field_tag :file ,required: true%>
-          <%= submit_tag :upload_voters %>
-      <% end %>
-    </div>
-    <br/>
-    <div>
-      <% if pending_voters = @election.pending_voters %>
-        <b> Pending Voters are below </b><br/> 
-        <% pending_voters.each do |pv| %>
-            <%= pv.email %><br/>
+  <div>
+    <% if current_user.id == @election.admin_id %>
+      <div>
+        <%= form_tag import_voters_path(@election.id), multipart: true do %>
+        Upload .csv file with data of voters: 
+            <%= file_field_tag :file ,required: true%>
+            <%= submit_tag :upload_voters %>
         <% end %>
-      <% end %>
-    </div>
-    <br/>
-    <div>
-      <% if @election.status == "live"%>
-        <button type="button" class="btn btn-light">
+      </div>
+      <br/>
+      <div>
+        <% if @election.pending_voters.count >= 1 %>
+          <b> Pending Voters are below </b><br/> 
+          <% @election.pending_voters.each do |pv| %>
+              <%= pv.email %><br/>
+          <% end %>
+        <% end %>
+      </div>
+      <br/>
+      <div>
+        <button type="button" class="btn btn-success">
+          <%= link_to "start election",   start_election_path(@election.id)%> 
+        </button>
+        <button type="button" class="btn btn-danger">
+          <%= link_to "terminate election", end_election_path(@election.id)%><br/> 
+        </button>
+        <% if @election.status == "live"%>
+          <button type="button" class="btn btn-warning">
+            <%= link_to "vote", start_election_path(@election.id)%>
+          </button>
+        <% elsif @election.status == "suspended"%>
+          <button type="button" class="btn btn-warning">
+            <%= link_to "result", result_election_path(@election.id)%>
+          </button>
+        <% end %>
+      </div>
+
+    <% elsif @election.status == "waiting" and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M')) %>
+      <button type="button" class="btn btn-light">
+        <%= link_to "request to be voter", request_path(@election.id,"voter")%>
+      </button>
+      <button type="button" class="btn btn-dark">
+        <%= link_to "request to be candidate", request_path(@election.id,"candidate")%><br/>
+      </button>
+    
+    <% elsif @election.requests.exists?(request_sender_id: current_user.id, purpose: "voter", status: :approved) %>
+      <% if @election.status  == "live" %>
+        <button type="button" class="btn btn-warning">
           <%= link_to "vote", start_election_path(@election.id)%>
         </button>
-      <% elsif @election.status == "suspended"%>
-        <button type="button" class="btn btn-light">
+      <% elsif @election.status == "suspended" %>
+        <button type="button" class="btn btn-warning">
           <%= link_to "result", result_election_path(@election.id)%>
         </button>
       <% end %>
-    </div>
-
-  <% elsif @election.status == "waiting" and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M')) %>
-    <button type="button" class="btn btn-light">
-      <%= link_to "request to be voter", request_path(@election.id,"voter")%>
-    </button>
-    <button type="button" class="btn btn-dark">
-      <%= link_to "request to be candidate", request_path(@election.id,"candidate")%><br/>
-    </button>
-  
-  <% elsif @election.requests.exists?(request_sender_id: current_user.id, purpose: "voter", status: :approved) %>
-  <% byebug %>
-    <% if @election.status  == "live" %>
-      <button type="button" class="btn btn-light">
-        <%= link_to "vote", start_election_path(@election.id)%>
-      </button>
-    <% elsif @election.status == "suspended" %>
-      <button type="button" class="btn btn-light">
-        <%= link_to "result", result_election_path(@election.id)%>
-      </button>
     <% end %>
-  <% end %>
+  </div>
+</div>
+<div></div>
 </div>

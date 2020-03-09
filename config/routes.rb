@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'electo#welcome'
+  root to: 'elections#index'
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   resources :election_data
 
-
+  get "my_elections" => "elections#my_elections", as: "my_elections"
   get "election/confirmation/:id" => "elections#confirm", as: "election_confirmation"
   get "request/approve/:id" => "requests#approve", as: "approve_request"
   delete "request/:id/delete" => "requests#destroy", as: "delete_request"

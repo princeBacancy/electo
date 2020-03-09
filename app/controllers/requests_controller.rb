@@ -36,7 +36,7 @@ class RequestsController < ApplicationController
     @request = Request.includes(:election).find(params[:id])
     if @request.update(status: :approved)
       if @request.purpose == 'candidate'
-        @request.election.election_data.build(candidate_id: @requset.request_sender_id).save
+        @request.election.election_data.build(candidate_id: @request.request_sender_id).save
       end
       RequestConfirmedMailer.request_confirmed(@request).deliver
       if current_user && (current_user.id == @request.election.admin_id)

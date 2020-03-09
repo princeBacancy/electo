@@ -4,7 +4,13 @@ class ElectionsController < ApplicationController
   before_action :find_election, only: %i[edit update confirm destroy end]
   before_action :authenticate_user!
 
-  def index; end
+  def index
+    @elections = Election.order_by_status
+  end
+
+  def my_elections
+    @elections = Election.all
+  end
 
   def find_election
     @election = Election.find(params[:id])

@@ -1,0 +1,20 @@
+body {
+    .outer {
+        display: flex;
+        justify-content: center;
+        .inner {
+            margin: 20px 0px;
+            padding: 10px;
+            font-family: 'Oxanium', cursive;
+            background: linear-gradient( rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('Group 12@2x.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid cyan;
+            width: auto;
+            height: auto;
+            a {
+                color: black;
+            }
+        }
+    }
+}
