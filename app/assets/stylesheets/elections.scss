@@ -1,3 +1,20 @@
 // Place all the styles related to the elections controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.record {
+    background-image: linear-gradient(white, #EEEEEE, white);
+    font-family: 'Oxanium', cursive;
+    line-height: 30px;
+    .left {
+        padding: 30px;
+        a {
+            text-decoration: none;
+            color: black;
+            font-size: large;
+        }
+    }
+    .right {
+        border-left: 1px solid #ccc;
+        padding: 20px 40px;
+    }
+}

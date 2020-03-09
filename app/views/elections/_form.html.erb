@@ -1,4 +1,3 @@
-
 <%= javascript_pack_tag 'election', 'data-turbolinks-track': 'reload' %>
 
 <%
@@ -15,42 +14,40 @@
     <%= e %>
   <% end %>
 <% end %>
-
-
 <%= form_with model:@election do |f| %>
-  <div>
+  <div class="form-group"> 
     <%= f.label :title %>
     <%= f.text_field :title %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :description %><br/>
     <%= f.text_area :description %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :additional_information %>
     <%= f.text_field :additional_information %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :deadline_for_registration %>
     <%= f.datetime_local_field :deadline_for_registration, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "deadline" %>
 
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :start_time %>
     <%= f.datetime_local_field :start_time, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "start_time" %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :end_time %>
     <%= f.datetime_local_field :end_time, min: DateTime.now.change(:sec => 0), max: DateTime.now+1.year, id: "end_time"%>
   </div>
 
   <div>
-    <%= f.submit "submit", id: "submit"%>
+    <%= f.submit "submit", id: "submit", class: "btn btn-success"%>
   </div>
 
   <div style="color:red" id="error"></div>
