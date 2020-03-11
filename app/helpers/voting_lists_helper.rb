@@ -1,0 +1,2 @@
+module VotingListsHelper
+end

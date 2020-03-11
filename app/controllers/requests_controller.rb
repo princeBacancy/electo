@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 class RequestsController < ApplicationController
@@ -8,11 +7,15 @@ class RequestsController < ApplicationController
     @requests = Request.includes(:request_sender, election: [:admin]).all
   end
 
+  def election_requests
+    @requests = Request.where(election_id: params[:id])
+  end
+
   def new
     @election = Election.includes(:requests).find(params[:id])
     request = @election.requests.where(request_sender_id: current_user.id, purpose: params[:type])
 
-    if request.empty? and !(@election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M'))
+    if request.empty? && @election.deadline_for_registration.strftime('%d %b %Y %H:%M') > DateTime.now.strftime('%d %b %Y %H:%M')
 
       @request = @election.requests.build(request_sender_id: current_user.id, purpose: params[:type])
       if @request.save

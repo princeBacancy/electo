@@ -8,17 +8,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def assign_default_role_and_permissions
     # adding role
     @user.add_role :user
-
     # giving initial permissions
-    pending_voter = PendingVoter.find_by(email: @user.email)
+    pending_voter = PendingVoter.find_by(email: user.email)
 
     if pending_voter
-      request = Request.new(request_sender_id: @user.id, request_receiver_id: pending_voter.election.admin_id,
-                            election_id: pending_voter.election.id, purpose: 'voter', status: :approved)
+      byebug
+      request = Request.new(request_sender_id: @user.id, election_id: pending_voter.election.id,
+                purpose: 'voter', status: :approved)
       request.save
       pending_voter.destroy
       VotingPermissionMailer.voting_permission(request).deliver
     end
+    # UsersServices.pending_voter_entry(@user)
   end
   # GET /resource/sign_up
   # def new

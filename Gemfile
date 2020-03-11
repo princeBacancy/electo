@@ -9,8 +9,8 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'rolify'
 gem 'whenever', require: false
-# gem 'pry-rails'
-# gem 'pry-nav'
+gem 'pry-rails'
+gem 'pry-nav'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'

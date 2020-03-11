@@ -11,18 +11,49 @@ Rails.application.routes.draw do
       get :end 
       post :vote  
       get :result
+      get :confirm
+    end
+    get :my_elections, on: :collection 
+  end
+
+  resources :election_data, only: %i[destroy] do
+    member do
+      get :index
+    end
+  end
+ 
+  resources :admin, only: %i[index] do
+    member do
+      get :show_user
+      get :user_elections
+      get :user_requests
+      get :user_votes
+      get :user_candidate
+      get :user_winner
     end
   end
 
-  resources :election_data
+  resources :requests, only: %i[index] do
+    member do
+      get :election_requests
+      get :approve
+      delete :destroy
+      post :import_voters
+      get :new
+    end
+  end
 
-  get "my_elections" => "elections#my_elections", as: "my_elections"
-  get "election/confirmation/:id" => "elections#confirm", as: "election_confirmation"
-  get "request/approve/:id" => "requests#approve", as: "approve_request"
-  delete "request/:id/delete" => "requests#destroy", as: "delete_request"
-  get "request/:id" => "requests#index", as: "requests"
-  get "request/:id/:type" => "requests#new", as: "request"
-  post "request/import_voters/:id" => "requests#import_voters",as: "import_voters"
+  resources :voting_lists, only: %i[destroy] do
+    member do
+      get :index
+    end
+  end
 
+  resources :winners, only: %i[destroy] do
+    member do
+      get :index
+    end
+  end
+  
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
