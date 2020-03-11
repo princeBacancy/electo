@@ -15,7 +15,7 @@
           <td><%= request.election.title %></td>
           <td><%= request.purpose %></td>
           <td><%= request.status %></td>
-          <td><%= link_to "delete", delete_request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
+          <td><%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
         </tr>
       <% end %>
     <% end %>

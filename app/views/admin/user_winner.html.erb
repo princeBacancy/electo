@@ -9,8 +9,9 @@
   </form> 
 <%
 =end%>
-  <% @elections.each do |election| %>
-    <% if (election.approval_status == "approved" and current_user.id != election.admin_id) or current_user.has_role? :super_admin%>
+  <% @user.election_data.each do |e| %>
+    <% if e.winner %>
+      <% election = e.winner.election %>
       <div class="row record">
         <div class="col-lg-4 left" >
           <b><%= link_to election.title, election_path(election.id) %></b>
@@ -21,29 +22,22 @@
           <b>~> election will start on : </b><%= election.start_time.strftime('%d %b %Y') %><b> around </b><%= election.start_time.strftime('%H:%M') %><br>
           <b>~> election will end on : </b><%= election.end_time.strftime('%d %b %Y') %><b> around </b><%= election.end_time.strftime('%H:%M') %><br>
           <b>~> status : </b>
-            <% if election.status == "live" %>
+          <% if election.status == "live" %>
               <span style="color:green">live</span>
-            <% elsif election.status == "waiting" %>
+          <% elsif election.status == "waiting" %>
               <span style="color:#8A91EF">waiting</span>
-            <% else %>
+          <% else %>
               <span style="color:red">suspended</span>
-            <% end %><br>
+          <% end %><br>
           <% if current_user.has_role? :super_admin %>
-            <% if election.approval_status == "pending" %>
+          <% if election.approval_status == "pending" %>
               <%= link_to "Approve", confirm_election_path(election.id) %>
-            <% end %>
-            <%= link_to "Edit", edit_election_path(election.id) %> |
-            <%= link_to "Delete", election_path(election.id), style:"color:red", data: {method: :delete, confirm: "Are you sure to delete this election"} %><br>
-            <%= link_to "Requests", election_requests_request_path(election.id) %> |
-            <%= link_to "Election Data", election_datum_path(election.id) %> |
-            <%= link_to "votes", voting_list_path(election.id) %> |
-            <%= link_to "winners", winner_path(election.id) %>  
-
-
+          <% end %>
+          <%= link_to "Edit", edit_election_path(election.id) %> |
+          <%= link_to "Delete", election_path(election.id), style:"color:red", data: {method: :delete, confirm: "Are you sure to delete this election"} %>
           <% end %>
         </div>
       </div>
     <% end %>
   <% end %>
 </div>
-

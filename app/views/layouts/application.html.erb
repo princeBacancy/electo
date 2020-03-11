@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Electo</title>
+    <%= favicon_link_tag %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <link href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet">
@@ -31,7 +32,7 @@
                 Election
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <%= link_to "My Elections", my_elections_path , class: "dropdown-item" %>
+                <%= link_to "My Elections", my_elections_elections_path , class: "dropdown-item" %>
                 <div class="dropdown-divider"></div>
                 <%= link_to "Create Election", new_election_path, class: "dropdown-item"%>
               </div>
@@ -45,6 +46,11 @@
             <li class="nav-item">
               <%= link_to "Logout", destroy_user_session_path, method: "delete", class: "nav-link" %> 
             </li>
+            <% if current_user.has_role? :super_admin %>
+              <li class="nav-item">
+                <%= link_to "ROOT ACCESS", admin_index_path, class: "nav-link", style:"color:crimson; font-weight:bold" %> 
+              </li>
+            <% end %>
           </ul>
           <ul class="navbar-nav mr-right">
             <li class="nav-item"><%= link_to current_user.user_name, edit_user_registration_path, style: "font-size:15px; color: black" %></li>

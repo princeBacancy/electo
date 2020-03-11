@@ -1,0 +1,22 @@
+<div style="font-family: 'Oxanium', cursive; margin-top:10px">
+<table class="table">
+  <h3> Election Data </h3>
+    <thead>
+      <tr>
+        <th scope="col">election</th>
+        <th scope="col">candidate</th> 
+        <th scope="col">votes</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @election_data.each do |ed| %>
+      <tr>
+        <td><%= ed.election.title %></td>
+        <td><%= link_to ed.candidate_id, show_user_admin_path(ed.candidate_id) %></td>
+        <td><%= ed.votes_count %></td>
+        <td><%= link_to "delete", election_datum_path(ed.id), data: {method: :delete, confirm:"are you sure to delete???"} %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>

@@ -33,7 +33,7 @@ class ElectionsController < ApplicationController
     end
   end
 
-  def show 
+  def show
     @election = Election.includes(:pending_voters, :requests).find(params[:id])
   end
 
@@ -77,11 +77,11 @@ class ElectionsController < ApplicationController
   def vote
     @election = Election.includes(:voters, :election_data).find(params[:id])
     if !@election.voters.exists?(voter_id: current_user.id) && @election.status == 'live'
-      a = ElectionDatum.left_joins(:candidate).find_by("users.user_name=? AND election_data.election_id=?",params[:election][:candidates], params[:id])
+      a = ElectionDatum.left_joins(:candidate).find_by('users.user_name=? AND election_data.election_id=?', params[:election][:candidates], params[:id])
       a.update(votes_count: a.votes_count + 1)
 
       @election.voters.build(voter_id: current_user.id).save
-      
+
       flash[:status] = "voted successfully to #{params[:election][:candidates]}"
       redirect_to result_election_path(@election.id)
     end

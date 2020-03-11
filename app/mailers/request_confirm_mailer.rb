@@ -8,6 +8,6 @@ class RequestConfirmMailer < ApplicationMailer
   def request_confirm(request)
     @greeting = "Hi"
     @request = request
-    mail to: request.request.election.admin.email, subject: "Request Confirmation"
+    mail to: request.election.admin.email, subject: "Request Confirmation"
   end
 end
