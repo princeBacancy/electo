@@ -1,33 +1,13 @@
-<div style="font-family: 'Oxanium', cursive;margin-top:10px">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-        <th scope="col">Deadline For Registration</th>
-        <th scope="col">Show</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
-        <th scope="col">Approval Status</th>
-      </tr>    
-    </thead>
-    <tbody>
-      <% @elections.each do |election| %>
-        <% if current_user.id == election.admin_id %>
-          <tr>
-            <td><%= election.title %></td>
-            <td><%= election.description %></td>
-            <td><%= election.deadline_for_registration %></td>
-            <td><%= link_to "show", election_path(election.id), id:"id"%></td>
-            <td><%= link_to "edit", edit_election_path(election.id) %></td>
-            <td><%= link_to "delete", election_path(election.id), data: {method: :delete, confirm: "Are you sure to remove this election?????"} %></td>
-            <td><%= election.approval_status %></td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
+<%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
+<div class="container-fluid">
+  <% @elections.each do |election| %>
+    <% if current_user.id == election.admin_id %>
+      <%= render partial: 'admin/elections', locals: { election: election } %>
+    <% end %>
+  <% end %>
 </div>
+
+
 
 
 

@@ -1,5 +1,7 @@
-set :environment, 'development'
 # frozen_string_literal: true
+
+set :environment, 'development'
+
 
 # Use this file to easily define all of your cron jobs.
 #

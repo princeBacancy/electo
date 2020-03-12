@@ -14,7 +14,7 @@ class RequestsController < ApplicationController
 
   def new
     request = Request.get_request(current_user, params)
-
+    byebug
     if !request
       new_request
     elsif request

@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2020_03_02_070742) do
     t.datetime "deadline_for_registration"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer "status", default: 0
+    t.integer "status", default: 1
     t.integer "approval_status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

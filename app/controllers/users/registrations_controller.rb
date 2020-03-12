@@ -9,7 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # adding role and initial permissions
   def assign_default_role_and_permissions
     @user.add_role :user
-    pending_voters = PendingVoter.includes(:election).where(email: user.email)
+    pending_voters = PendingVoter.includes(:election).where(email: @user.email)
     assign_pending_voter_rights(pending_voters, @user) if pending_voters
   end
 

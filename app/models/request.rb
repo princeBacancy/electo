@@ -41,7 +41,7 @@ class Request < ApplicationRecord
                                             purpose: 'voter')
       end
       election.requests.build(request_sender_id: user.id,
-                              purpose: 'voter', status: :approved) if user && !request
+                              purpose: 'voter', status: :approved).save if user && !request
       VotingPermissionMailer.voting_permission(email, election_id).deliver
       if !user && !pending_voter
         election.pending_voters.build(email: email).save
