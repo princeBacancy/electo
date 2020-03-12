@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# election management
 class ElectionsController < ApplicationController
   before_action :find_election, only: %i[edit update confirm destroy end]
   before_action :authenticate_user!
@@ -12,10 +13,6 @@ class ElectionsController < ApplicationController
     @elections = Election.all
   end
 
-  def find_election
-    @election = Election.find(params[:id])
-  end
-
   def new
     @election = Election.new
   end
@@ -24,7 +21,6 @@ class ElectionsController < ApplicationController
     @election = Election.new(election_params)
     @election.admin_id = current_user.id
     if @election.save
-      ConfirmElectionMailer.confirmation(@election).deliver
       flash[:status] = 'request send to super admin for approval'
       redirect_to :root
     else
@@ -36,8 +32,6 @@ class ElectionsController < ApplicationController
   def show
     @election = Election.includes(:pending_voters, :requests).find(params[:id])
   end
-
-  def edit; end
 
   def update
     if @election.update(election_params)
@@ -55,6 +49,8 @@ class ElectionsController < ApplicationController
     if current_user.has_role?(:super_admin)
       flash[:status] = 'thank you for approval'
       redirect_to :root
+    else
+      flash[:status] = 'failed!!!'
     end
   end
 
@@ -64,24 +60,23 @@ class ElectionsController < ApplicationController
   end
 
   def start
-    @election = Election.includes(:requests, :voters, election_data: [:candidate]).find(params[:id])
-    if (current_user == @election.admin) && (@election.approval_status == 'approved') && (@election.status != 'live')
+    @election = Election.includes(:requests, :voters, election_data:
+                                 [:candidate])
+                        .find(params[:id])
+    if (current_user == @election.admin) &&
+       (@election.approval_status == 'approved') &&
+       (@election.status != 'live')
       @election.update(status: 'live')
-      @voters = @election.requests.where(status: :approved)
-      @voters.each do |voter|
-        ElectionLiveNotificationMailer.notify(voter, @election).deliver
-      end
+      notify_voters(@election)
     end
   end
 
   def vote
     @election = Election.includes(:voters, :election_data).find(params[:id])
-    if !@election.voters.exists?(voter_id: current_user.id) && @election.status == 'live'
-      a = ElectionDatum.left_joins(:candidate).find_by('users.user_name=? AND election_data.election_id=?', params[:election][:candidates], params[:id])
-      a.update(votes_count: a.votes_count + 1)
-
+    if !@election.voters.exists?(voter_id: current_user.id) &&
+       @election.status == 'live'
+      ElectionDatum.increase_vote(params)
       @election.voters.build(voter_id: current_user.id).save
-
       flash[:status] = "voted successfully to #{params[:election][:candidates]}"
       redirect_to result_election_path(@election.id)
     end
@@ -96,7 +91,7 @@ class ElectionsController < ApplicationController
 
   def result
     @election = Election.includes(:election_data).find(params[:id])
-    if (@election.status == 'suspended') && @election.election_data.exists?
+    if (@election.status == 'suspended') && @election.election_data
       @winners_data = @election.election_data.maximum_votes.includes(:candidate)
       @winners_data.each do |winner|
         @election.winners.build(election_datum_id: winner.id).save
@@ -106,7 +101,22 @@ class ElectionsController < ApplicationController
 
   private
 
+  def notify_voters(election)
+    voters = election.requests.where(status: :approved)
+    voters.each do |voter|
+      ElectionLiveNotificationMailer.notify(voter, election).deliver
+    end
+  end
+
+  def find_election
+    @election = Election.find(params[:id])
+  end
+
   def election_params
-    params.require('election').permit(:title, :description, :additional_information, :deadline_for_registration, :start_time, :end_time)
+    params.require('election').permit(:title, :description,
+                                      :additional_information,
+                                      :deadline_for_registration,
+                                      :start_time,
+                                      :end_time)
   end
 end

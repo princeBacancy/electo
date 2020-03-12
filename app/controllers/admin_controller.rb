@@ -3,6 +3,7 @@
 # all methods in this controller returning entities related
 # specific selected user by admin
 
+# it manages all admin rights
 class AdminController < ApplicationController
   def index
     @users = User.all if current_user.has_role? :super_admin

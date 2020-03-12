@@ -1,26 +1,30 @@
 # frozen_string_literal: true
 
+# user registartion
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
   after_action :assign_default_role_and_permissions, only: [:create]
 
+  # adding role and initial permissions
   def assign_default_role_and_permissions
-    # adding role
     @user.add_role :user
-    # giving initial permissions
-    pending_voter = PendingVoter.find_by(email: user.email)
+    pending_voters = PendingVoter.includes(:election).where(email: @user.email)
+    assign_pending_voter_rights(pending_voters, @user) if pending_voters
+  end
 
-    if pending_voter
-      byebug
-      request = Request.new(request_sender_id: @user.id, election_id: pending_voter.election.id,
-                purpose: 'voter', status: :approved)
+  private
+
+  def assign_pending_voter_rights(pending_voters, user)
+    pending_voters.each do |pending_voter|
+      request = Request.new(request_sender_id: user.id, election_id:
+                            pending_voter.election.id,
+                            purpose: 'voter', status: :approved)
       request.save
       pending_voter.destroy
-      VotingPermissionMailer.voting_permission(request).deliver
     end
-    # UsersServices.pending_voter_entry(@user)
   end
+
   # GET /resource/sign_up
   # def new
   #   super

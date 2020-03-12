@@ -1,5 +1,7 @@
-set :environment, 'development'
 # frozen_string_literal: true
+
+set :environment, 'development'
+
 
 # Use this file to easily define all of your cron jobs.
 #
@@ -31,6 +33,6 @@ every 1.minute do
 end
 
 # Learn more: http://github.com/javan/whenever
-#tail -f log/cron_log.log
-#whenever -c
-#whenever --update-crontab
+# tail -f log/cron_log.log
+# whenever -c
+# whenever --update-crontab

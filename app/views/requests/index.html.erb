@@ -1,6 +1,6 @@
 <div style="font-family: 'Oxanium', cursive; margin-top:10px">
 <table class="table">
-  <h3>send requests</h3>
+  <h5>send requests</h5>
     <thead>
       <tr>
         <th scope="col">election</th> 
@@ -23,7 +23,7 @@
 </table>
 
 <table class="table">
-  <h3>received requests</h3>
+  <h5>received requests</h5>
   <thead>
       <tr>
           <th scope="col">sender</th>
@@ -50,7 +50,7 @@
 
 <% if current_user.has_role? :super_admin %>
   <table class="table">
-    <h3>other requests</h3>
+    <h5>other requests</h5>
     <thead>
         <tr>
             <th scope="col">sender</th>

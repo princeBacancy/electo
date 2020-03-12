@@ -1,19 +1,20 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   root to: 'elections#index'
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
 
-
   resources :elections do
     member do
       get :start
-      get :end 
-      post :vote  
+      get :end
+      post :vote
       get :result
       get :confirm
     end
-    get :my_elections, on: :collection 
+    get :my_elections, on: :collection
   end
 
   resources :election_data, only: %i[destroy] do
@@ -21,7 +22,7 @@ Rails.application.routes.draw do
       get :index
     end
   end
- 
+
   resources :admin, only: %i[index] do
     member do
       get :show_user
@@ -54,6 +55,6 @@ Rails.application.routes.draw do
       get :index
     end
   end
-  
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

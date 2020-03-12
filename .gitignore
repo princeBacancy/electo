@@ -31,3 +31,5 @@ yarn-debug.log*
 .yarn-integrity
 
 /config/credentials/staging.key
+
+/config/database.yml

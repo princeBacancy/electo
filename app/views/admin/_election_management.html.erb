@@ -1,0 +1,20 @@
+<% if current_user.has_role? :super_admin and current_user == election.admin %>
+  <% if election.approval_status == "pending" %>
+    <%= link_to "Approve", confirm_election_path(election.id) %><br>
+  <% end %>
+  | <%= link_to "Edit", edit_election_path(election.id) %> |
+  <%= link_to "Delete", election_path(election.id), style:"color:red", data: {method: :delete, confirm: "Are you sure to delete this election"} %> |
+  <br>
+  <% if election.election_data.present? %>
+  | <%= link_to "Election Data", election_datum_path(election.id) %> |
+  <% end %>
+  <% if election.requests.present? %>
+    <%= link_to "Requests", election_requests_request_path(election.id) %> |
+  <% end %>
+  <% if election.voters.present? %>
+    <%= link_to "voters", voting_list_path(election.id) %> |
+  <% end %>
+  <% if election.winners.present? %>
+    <%= link_to "Winners", winner_path(election.id) %>
+  <% end %>
+<% end %>

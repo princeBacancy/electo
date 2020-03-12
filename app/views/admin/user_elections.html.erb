@@ -1,40 +1,6 @@
 <%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
 <div class="container-fluid">
-<%
-=begin%>
- <div>
-  <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form> 
-<%
-=end%>
   <% @user.elections.each do |election| %>
-    <div class="row record">
-      <div class="col-lg-4 left" >
-        <b><%= link_to election.title, election_path(election.id) %></b>
-      </div>
-      <div class="col-lg-8 right" >
-        <%= election. description %><br>
-        <b>~> deadline for Registration : </b><%= election.deadline_for_registration.strftime('%d %b %Y %H:%M') %><br>
-        <b>~> election will start on : </b><%= election.start_time.strftime('%d %b %Y') %><b> around </b><%= election.start_time.strftime('%H:%M') %><br>
-        <b>~> election will end on : </b><%= election.end_time.strftime('%d %b %Y') %><b> around </b><%= election.end_time.strftime('%H:%M') %><br>
-        <b>~> status : </b>
-          <% if election.status == "live" %>
-            <span style="color:green">live</span>
-          <% elsif election.status == "waiting" %>
-            <span style="color:#8A91EF">waiting</span>
-          <% else %>
-            <span style="color:red">suspended</span>
-          <% end %><br>
-        <% if current_user.has_role? :super_admin %>
-          <% if election.approval_status == "pending" %>
-            <%= link_to "Approve", confirm_election_path(election.id) %>
-          <% end %>
-          <%= link_to "Edit", edit_election_path(election.id) %> |
-          <%= link_to "Delete", election_path(election.id), style:"color:red", data: {method: :delete, confirm: "Are you sure to delete this election"} %>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: 'elections', locals: { election: election } %>
   <% end %>
 </div>
