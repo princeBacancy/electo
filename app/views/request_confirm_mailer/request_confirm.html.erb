@@ -1,10 +1,10 @@
 <h1>Request Confirm</h1>
 
 <p>
-  <%= @greeting %>, I am <%= @request.request_sender.first_name %> <%= @request.request_sender.last_name %><br/>
+  <%= @greeting %>, I am <%= @request_sender.first_name %> <%= @request_sender.last_name %><br/>
   <br/>  
   <p>please approve my request for,</p><br/>
-  <b>election:</b><p> <%= @request.election.title %></p><br/>
+  <b>election:</b><p> <%= @election.title %></p><br/>
   <b>as:</b><p> <%= @request.purpose%> </p><br/>
   <br/>
   <%= link_to  "Confirm", approve_request_url(@request.id) %>

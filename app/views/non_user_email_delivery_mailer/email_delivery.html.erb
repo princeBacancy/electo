@@ -1,9 +1,0 @@
-<h1>Voting Permission</h1>
-
-<div>
-  <%= @greeting %>, I am <%= @election.admin.first_name %>.
-  As an admin of election i am allowing you to vote in our election <%= @election.title %>.
-  When election goes live you will be informed by email or you can check timing details from <%= link_to "website", root_url %> also and can participate from there too. 
-
-  Please view election details from <%= link_to "here", election_url(@election.id) %>
-</div>

@@ -1,14 +1,5 @@
 <%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
 <div class="container-fluid">
-<%
-=begin%>
- <div>
-  <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form> 
-<%
-=end%>
   <% @user.election_data.each do |e| %>
     <% if e.winner %>
       <% election = e.winner.election %>
@@ -18,10 +9,10 @@
         </div>
         <div class="col-lg-8 right" >
           <%= election. description %><br>
-          <b>~> deadline for Registration : </b><%= election.deadline_for_registration.strftime('%d %b %Y %H:%M') %><br>
-          <b>~> election will start on : </b><%= election.start_time.strftime('%d %b %Y') %><b> around </b><%= election.start_time.strftime('%H:%M') %><br>
-          <b>~> election will end on : </b><%= election.end_time.strftime('%d %b %Y') %><b> around </b><%= election.end_time.strftime('%H:%M') %><br>
-          <b>~> status : </b>
+          <b> deadline for Registration : </b><%= election.deadline_for_registration.strftime('%d %b %Y %H:%M') %><br>
+          <b> election will start on : </b><%= election.start_time.strftime('%d %b %Y') %><b> around </b><%= election.start_time.strftime('%H:%M') %><br>
+          <b> election will end on : </b><%= election.end_time.strftime('%d %b %Y') %><b> around </b><%= election.end_time.strftime('%H:%M') %><br>
+          <b> status : </b>
           <% if election.status == "live" %>
               <span style="color:green">live</span>
           <% elsif election.status == "waiting" %>

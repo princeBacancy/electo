@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -9,8 +11,7 @@ Rails.application.configure do
   # config.hosts << "1561efbb.ngrok.io"
   # Do not eager load code on boot.
   config.eager_load = false
-  config.action_mailer.default_url_options = { host: '127.0.0.1', port: '3000'}
-
+  config.action_mailer.default_url_options = { host: '127.0.0.1', port: '3000' }
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -63,18 +64,15 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-
-
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-#EDITOR="vi" rails credentials:edit
-:user_name => Rails.application.credentials.email,
-:password => Rails.application.credentials.password,
-:domain => 'gmail.com',
-:address => 'smtp.gmail.com',
-:port => 587,
-:authentication => :plain,
-:enable_starttls_auto => true
-}
-
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    # EDITOR="vi" rails credentials:edit
+    user_name: Rails.application.credentials.email,
+    password: Rails.application.credentials.password,
+    domain: 'gmail.com',
+    address: 'smtp.gmail.com',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 end
