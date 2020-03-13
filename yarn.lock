@@ -745,6 +745,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@client-side-validations/client-side-validations@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@client-side-validations/client-side-validations/-/client-side-validations-0.1.1.tgz#588488972ad09a5b5e50d2b8e2916bc8b2138c88"
+  integrity sha512-f/5dczipcMzEvxIm+SAWDdKjfQtt/aX8N613BeL+CJymv9VIwT9NNXxzrZ9QJyOfDhpudO1teJ9e3UdxDYts+A==
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"

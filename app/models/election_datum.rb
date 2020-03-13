@@ -2,11 +2,16 @@
 
 # manages all elections data
 class ElectionDatum < ApplicationRecord
+  # relations
   belongs_to :election, dependent: :destroy
   belongs_to :candidate, class_name: 'User', foreign_key: 'candidate_id'
   has_one :winner
 
+  # scopes
   scope :maximum_votes, -> { where(votes_count: maximum(:votes_count)) }
+
+  # validations
+  validates_uniqueness_of :election_id, :scope => :candidate_id, presence: true
 
   def self.increase_vote(params)
     a = ElectionDatum.left_joins(:candidate)

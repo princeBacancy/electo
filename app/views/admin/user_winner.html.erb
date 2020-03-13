@@ -1,9 +1,16 @@
 <%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
+<h5>elections in which <%= @user.user_name %> is a winner</h5>
+
 <div class="container-fluid">
+  <% x = 1 %>
   <% @user.election_data.each do |e| %>
     <% if e.winner %>
+      <% x = 0 %>
       <% election = e.winner.election %>
         <%= render partial: 'elections', locals: { election: election } %>
     <% end %>
   <% end %>
 </div>
+<% if x == 1 %>
+  <p style="color:red">No Record Found!!!</p>
+<% end %>

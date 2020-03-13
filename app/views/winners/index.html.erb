@@ -1,23 +1,28 @@
-<div style="font-family: 'Oxanium', cursive; margin-top:10px">
-<table class="table">
-  <h3> Winners </h3>
-    <thead>
-      <tr>
-        <th scope="col">election</th>
-        <th scope="col">winner</th>
-        <th scope="col">time</th>
-        <th scope="col">delete</th> 
-      </tr>
-    </thead>
-    <tbody>
-    <% @winners.each do |winner| %>
-      <tr>
-        <td><%= winner.election.title %></td>
-        <td><%= link_to winner.election_datum.candidate_id , show_user_admin_path(winner.election_datum.candidate_id) %></td>
-        <td><%= winner.created_at.strftime('%d %b %y %H:%M') %>
-        <td><%= link_to "delete", winner_path(winner.id), data: {method: :delete, confirm:"are you sure to delete???"} %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div style="margin-top:10px">
+  <% if @winners.present? %>
+    <table class="table">
+      <h3> Winners </h3>
+        <thead>
+          <tr>
+            <th scope="col">election</th>
+            <th scope="col">winner</th>
+            <th scope="col">time</th>
+            <th scope="col">manage</th> 
+          </tr>
+        </thead>
+        <tbody>
+        <% @winners.each do |winner| %>
+          <tr>
+            <td><%= winner.election.title %></td>
+            <td><%= link_to winner.election_datum.candidate_id , show_user_admin_path(winner.election_datum.candidate_id) %></td>
+            <td><%= winner.created_at.strftime('%d %b %y %H:%M') %>
+            <td><%= link_to "delete", winner_path(winner.id), data: {method: :delete, confirm:"are you sure to delete???"} %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @winners, renderer: BootstrapPagination::Rails %>
+  <% else %>
+  <p style="color:red">No Record Found!!!</p>
+  <% end %>
 </div>

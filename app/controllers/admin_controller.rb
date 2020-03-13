@@ -17,10 +17,6 @@ class AdminController < ApplicationController
     @user = User.includes(:elections).find(params[:id])
   end
 
-  def user_requests
-    @user = User.includes(:send_requests).find(params[:id])
-  end
-
   def user_votes
     @user = User.includes(votes: [:election]).find(params[:id])
   end

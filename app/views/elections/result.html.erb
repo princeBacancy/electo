@@ -1,35 +1,36 @@
-
- <%= javascript_pack_tag 'result', 'data-turbolinks-track': 'reload' %> 
-
-
-
-<h1>LIVE RESULTS</h1>
-<P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">candidate</th>
-      <th scope="col">votes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @election.election_data.each do |votes| %>
-      <tr>
-      <td><%= votes.candidate.user_name %></td>
-      <td><%= votes.votes_count %><%= @x %></td>
-      </tr>   
-    <% end %> 
-  </tbody>
-</table>
-<br/>
-<% if @election.status == "suspended" and @election.election_data.exists?%>
-  <% if @winners_data.count == 1 %>
-    <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
-  <% elsif %>
-    <h4>Draw Between : </h4><% @winners_data.each do |winner|%> 
-      <h4> <%= winner.candidate.user_name %> </h4>
-     <% end %>
+<%= javascript_pack_tag 'result', 'data-turbolinks-track': 'reload' %> 
+<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
+<div class="outer">
+  <div></div>
+  <div class="inner">
+    <h1>LIVE RESULTS</h1>
+    <P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">candidate</th>
+          <th scope="col">votes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @election.election_data.each do |votes| %>
+          <tr>
+          <td><%= votes.candidate.user_name %></td>
+          <td><%= votes.votes_count %><%= @x %></td>
+          </tr>   
+        <% end %> 
+      </tbody>
+    </table>
+    <br/>
+    <% if @election.status == "suspended" and @election.election_data.exists?%>
+      <% if @winners_data.count == 1 %>
+        <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
+      <% elsif %>
+        <h4>Draw Between : </h4><% @winners_data.each do |winner|%> 
+          <h4> <%= winner.candidate.user_name %> </h4>
+        <% end %>
+        <% end %>
     <% end %>
-<% end %>
-   
+  </div>
+  <div></div>
+</div>

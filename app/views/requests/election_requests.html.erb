@@ -1,24 +1,3 @@
-<div style="font-family: 'Oxanium', cursive; margin-top:10px">
-<table class="table">
-  <h3> Requests </h3>
-    <thead>
-      <tr>
-        <th scope="col">election</th>
-        <th scope="col">request sender</th> 
-        <th scope="col">request for</th>
-        <th scope="col">status</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @requests.each do |request| %>
-      <tr>
-        <td><%= request.election.title %></td>
-        <td><%= link_to request.request_sender_id, show_user_admin_path(request.request_sender_id) %></td>
-        <td><%= request.purpose %></td>
-        <td><%= request.status %></td>
-        <td><%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
+<div style="cursive; margin-top:10px">
+<h5>Election <%= @requests.first.election.title %>'s requests </h5>
+<%= render partial: 'requests',locals: { requests: @requests } %>

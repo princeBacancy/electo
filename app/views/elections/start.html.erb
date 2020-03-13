@@ -1,16 +1,23 @@
-<h2>Welcome to <%= @election.title %></h2>
-<i>choose your desired one!!! => <span style="color:red">Note: you can vote only once</span></i>
-<% if content = voting_page_content(@election) %>
-  <h5 style="color:red"><%= content %></h5>
-<% else %>
-  <%= form_with model:@election, url:vote_election_path, method: :post do |f| %>
-    <div class="field">
-      <b><%= f.label :candidates %></b><br />
-      <% @election.election_data.each do |e_data| %> 
-        <%= f.radio_button :candidates, e_data.candidate.user_name,id: e_data.candidate.user_name, required:true %> 
-        <%= f.label :"#{e_data.candidate.user_name}", e_data.candidate.user_name,for: e_data.candidate.user_name %><br/>
+<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
+<div class="outer">
+  <div></div>
+  <div class="inner">  
+    <h2>Welcome to <%= @election.title %></h2>
+    <i>choose your desired one!!! => <span style="color:red">Note: you can vote only once</span></i>
+    <% if content = voting_page_content(@election) %>
+      <h5 style="color:red"><%= content %></h5>
+    <% else %>
+      <%= form_with model:@election, url:vote_election_path, method: :post do |f| %>
+        <div class="field">
+          <b><%= f.label :candidates %></b><br />
+          <% @election.election_data.each do |e_data| %> 
+            <%= f.radio_button :candidates, e_data.candidate.user_name,id: e_data.candidate.user_name, required:true %> 
+            <%= f.label :"#{e_data.candidate.user_name}", e_data.candidate.user_name,for: e_data.candidate.user_name %><br/>
+          <% end %>
+        </div>
+        <%= f.submit "Vote" %>
       <% end %>
-    </div>
-    <%= f.submit "Vote" %>
-  <% end %>
-<% end %>
+    <% end %>
+  </div>
+  <div></div>
+</div>
