@@ -5,12 +5,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 gem 'cancan'
+gem 'client_side_validations'
 gem 'devise'
 gem 'jquery-rails'
 gem 'pry-nav'
 gem 'pry-rails'
 gem 'rolify'
 gem 'whenever', require: false
+gem 'will_paginate-bootstrap'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'

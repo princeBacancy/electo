@@ -1,22 +1,28 @@
-<div style="font-family: 'Oxanium', cursive; margin-top:10px">
-<table class="table">
-  <h3> Voting List</h3>
-    <thead>
-      <tr>
-        <th scope="col">election</th>
-        <th scope="col">voter</th>
-        <th scope="col">time</th> 
-      </tr>
-    </thead>
-    <tbody>
-    <% @votes.each do |vote| %>
-      <tr>
-        <td><%= vote.election.title %></td>
-        <td><%= link_to vote.voter_id , show_user_admin_path(vote.voter_id) %></td>
-        <td><%= vote.created_at.strftime('%d %b %y %H:%M') %>
-        <td><%= link_to "delete", voting_list_path(vote.id), data: {method: :delete, confirm:"are you sure to delete???"} %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div style="margin-top:10px">
+  <% if @votes.present? %>
+    <table class="table">
+      <h3> Voting List</h3>
+        <thead>
+          <tr>
+            <th scope="col">election</th>
+            <th scope="col">voter</th>
+            <th scope="col">time</th>
+            <th scope="col">manage</th> 
+          </tr>
+        </thead>
+        <tbody>
+        <% @votes.each do |vote| %>
+          <tr>
+            <td><%= vote.election.title %></td>
+            <td><%= link_to vote.voter_id , show_user_admin_path(vote.voter_id) %></td>
+            <td><%= vote.created_at.strftime('%d %b %y %H:%M') %>
+            <td><%= link_to "delete", voting_list_path(vote.id), data: {method: :delete, confirm:"are you sure to delete???"} %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @voters, renderer: BootstrapPagination::Rails %>
+  <% else %>
+    <p style="color:red">No Record Found!!!</p>
+  <% end %>
 </div>

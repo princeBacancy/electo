@@ -2,12 +2,20 @@
 
 # manages all requestes for elections
 class Request < ApplicationRecord
+  # callbacks
   after_create :request_confirmation_mail
 
+  # relations
   belongs_to :request_sender, class_name: 'User',
                               foreign_key: 'request_sender_id'
   belongs_to :election
+
+  # enum
   enum status: %i[pending approved rejected]
+
+  # validations
+  validates_presence_of :request_sender_id, :election_id, :purpose
+  validates :request_sender_id, uniqueness: {scope: [:election_id, :purpose]}
 
   def self.get_request(current_user, params)
     Request.includes(:election).find_by(election_id: params[:id],

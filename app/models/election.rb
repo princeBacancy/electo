@@ -2,8 +2,10 @@
 
 # manages elections
 class Election < ApplicationRecord
+  # callbacks
   after_create :election_confirmation_mail
 
+  # relations
   belongs_to :admin, class_name: 'User', foreign_key: 'admin_id'
   has_many :election_data, dependent: :destroy
   has_many :winners, dependent: :destroy
@@ -12,10 +14,18 @@ class Election < ApplicationRecord
   has_many :voters, class_name: 'VotingList', foreign_key: 'election_id',
                     dependent: :destroy
   
+  # enums & scopes
   enum status: %i[live waiting suspended]
   enum approval_status: %i[pending approved rejected]
-
   scope :order_by_status, -> { order(:status) }
+
+  #validations
+  validates :title, uniqueness: true
+  validates_presence_of :admin_id, :title, :description,
+                        :deadline_for_registration,
+                        :start_time,
+                        :end_time
+  
 
   def election_confirmation_mail
     ConfirmElectionMailer.confirmation(self).deliver

@@ -5,12 +5,12 @@ body {
         .inner {
             margin: 20px 0px;
             padding: 10px;
-            font-family: 'Oxanium', cursive;
             background: linear-gradient( rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('Group 12@2x.jpg');
             background-repeat: no-repeat;
             background-position: center;
             border: 1px solid cyan;
             width: auto;
+            min-height: 400px;
             height: auto;
             a {
                 color: black;

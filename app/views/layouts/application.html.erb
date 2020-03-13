@@ -14,50 +14,7 @@
   </head>
 
   <body>
-    <% if current_user %>
-      <nav class="navbar navbar-expand-lg navbar-light custom-nav">
-        <a class="navbar-brand" href="/">
-          <%= image_tag("Group 12.jpg", size: "30x30", alt: "Logo", class: "d-inline-block align-top")%>
-          <b><i>Electo</i></b>
-        </a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Election
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <%= link_to "My Elections", my_elections_elections_path , class: "dropdown-item" %>
-                <div class="dropdown-divider"></div>
-                <%= link_to "Create Election", new_election_path, class: "dropdown-item"%>
-              </div>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Requests", requests_path(current_user.id), class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Logout", destroy_user_session_path, method: "delete", class: "nav-link" %> 
-            </li>
-            <% if current_user.has_role? :super_admin %>
-              <li class="nav-item">
-                <%= link_to "ROOT ACCESS", admin_index_path, class: "nav-link", style:"color:crimson; font-weight:bold" %> 
-              </li>
-            <% end %>
-          </ul>
-          <ul class="navbar-nav mr-right">
-            <li class="nav-item"><%= link_to current_user.user_name, edit_user_registration_path, style: "font-size:15px; color: black" %></li>
-          </ul>
-        </div>
-      </nav>
-    <% end %>
+    <%= render partial: 'layouts/header' %>
     <% if flash.key?(:status) %>
       <p class="notice" style="color:red"><%= flash[:status] %></p>
     <% end %>

@@ -5,6 +5,7 @@ class WinnersController < ApplicationController
   def index
     @winners = Winner.includes(:election, election_datum: [:candidate])
                      .where(election_id: params[:id])
+    @winners = @winners.paginate(per_page: 10, page: params[:page])
   end
 
   def destroy

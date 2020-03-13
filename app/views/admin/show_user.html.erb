@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'election_show', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <% if current_user.has_role? :super_admin %>
     
@@ -14,7 +14,7 @@
       </div>
 
       <%= link_to "-> go to Elections of user", user_elections_admin_path(@user.id) %><br>
-      <%= link_to "-> go to Requests of user", user_requests_admin_path(@user.id) %><br>
+      <%= link_to "-> go to Requests of user", send_requests_request_path(@user.id) %><br>
       <%= link_to "-> go to election in which user has Voted", user_votes_admin_path(@user.id) %><br>
       <%= link_to "-> go to election in which user is candidate", user_candidate_admin_path(@user.id) %><br>
       <%= link_to "-> go to election in which user in winner", user_winner_admin_path(@user.id) %> <br>

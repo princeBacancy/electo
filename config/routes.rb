@@ -36,11 +36,15 @@ Rails.application.routes.draw do
 
   resources :requests, only: %i[index] do
     member do
+      get :send_requests
+      get :received_requests
       get :election_requests
       get :approve
       delete :destroy
       post :import_voters
       get :new
+      get :send_requests
+      get :received_requests
     end
   end
 

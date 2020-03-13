@@ -25,7 +25,7 @@ class ElectionsController < ApplicationController
       redirect_to :root
     else
       flash[:errors] = @election.errors.full_messages
-      render new_election_path
+      redirect_to new_election_path
     end
   end
 

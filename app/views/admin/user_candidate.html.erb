@@ -1,7 +1,12 @@
 <%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
-<div class="container-fluid">
-  <% @user.election_data.each do |e| %>
-    <% election = e.election %>
-     <%= render partial: 'elections',locals: { election: election }%>
-  <% end %>
-</div>
+<h5>elections in which <%= @user.user_name %> is a candidate</h5>
+<% if @user.election_data.present? %>
+  <div class="container-fluid">
+    <% @user.election_data.each do |e| %>
+      <% election = e.election %>
+      <%= render partial: 'elections',locals: { election: election } %>
+    <% end %>
+  </div>
+<% else %>
+  <p style="color:red">No Record Found!!!</p>
+<% end %>
