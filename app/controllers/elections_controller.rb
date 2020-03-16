@@ -55,8 +55,12 @@ class ElectionsController < ApplicationController
   end
 
   def destroy
-    @election.destroy
-    redirect_to :root
+    if @election.destroy
+      redirect_to :root
+      flash[:status] = 'destroyed!!!'
+    else
+      flash[:status] = 'failed!!!'
+    end
   end
 
   def start
@@ -65,8 +69,11 @@ class ElectionsController < ApplicationController
                         .find(params[:id])
     if (current_user == @election.admin) &&
        (@election.approval_status == 'approved') &&
-       (@election.status != 'live')
-      @election.update(status: 'live')
+       (@election.status == 'waiting')
+      @election.update(status: 'live', deadline_for_registration: DateTime.now,
+                       start_time: DateTime.now,
+                       end_time: DateTime.now)
+      byebug
       notify_voters(@election)
     end
   end
@@ -90,13 +97,22 @@ class ElectionsController < ApplicationController
   end
 
   def result
-    @election = Election.includes(:election_data).find(params[:id])
+    @election = Election.includes(:election_data, :requests).find(params[:id])
     if (@election.status == 'suspended') && @election.election_data
+      @pie_chart = []
       @winners_data = @election.election_data.maximum_votes.includes(:candidate)
       @winners_data.each do |winner|
         @election.winners.build(election_datum_id: winner.id).save
       end
     end
+  end
+
+  def sample_file_download
+    send_file(
+      "#{Rails.root}/public/sample.csv",
+      filename: 'voters.csv',
+      type: 'application/csv'
+    )
   end
 
   private

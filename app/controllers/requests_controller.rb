@@ -38,8 +38,8 @@ class RequestsController < ApplicationController
   def approve
     @request = Request.includes(:election).find(params[:id])
     if @request.purpose == 'candidate'
-      @request.election.election_data.build(candidate_id: @request
-              .request_sender_id).save
+      @request.election.payments.build(user_id: @request.request_sender_id,
+                                       amount: 50).save
     end
     RequestConfirmedMailer.request_confirmed(@request).deliver
     if @request.update(status: :approved)

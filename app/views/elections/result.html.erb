@@ -1,35 +1,40 @@
-<%= javascript_pack_tag 'result', 'data-turbolinks-track': 'reload' %> 
+<%= javascript_pack_tag 'result', 'data-turbolinks-track': 'reload' %>
 <%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
 <div class="outer">
   <div></div>
   <div class="inner">
     <h1>LIVE RESULTS</h1>
     <P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">candidate</th>
-          <th scope="col">votes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @election.election_data.each do |votes| %>
+    <% if (@election.status != "waiting" and @election.requests.exists?(request_sender_id: current_user.id, purpose: "voter", status: :approved)) or @election.admin == current_user or current_user.has_role? :super_admin%>
+      <table class="table">
+        <thead>
           <tr>
-          <td><%= votes.candidate.user_name %></td>
-          <td><%= votes.votes_count %><%= @x %></td>
-          </tr>   
-        <% end %> 
-      </tbody>
-    </table>
-    <br/>
+            <th scope="col">candidate</th>
+            <th scope="col">votes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @election.election_data.each do |votes| %>
+          <tr>
+            <td><%= votes.candidate.user_name %></td>
+            <td><%= votes.votes_count %><%= @x %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p style="color:red">sorry, you are not authorized!!!</p>
+    <% end %>
+    <br />
     <% if @election.status == "suspended" and @election.election_data.exists?%>
+      <%= pie_chart @election.election_data.joins(:candidate).pluck(:user_name, :votes_count) %>
       <% if @winners_data.count == 1 %>
         <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
       <% elsif %>
-        <h4>Draw Between : </h4><% @winners_data.each do |winner|%> 
-          <h4> <%= winner.candidate.user_name %> </h4>
+        <h4>Draw Between : </h4><% @winners_data.each do |winner|%>
+        <h4> <%= winner.candidate.user_name %> </h4>
         <% end %>
-        <% end %>
+      <% end %>
     <% end %>
   </div>
   <div></div>

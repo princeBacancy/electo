@@ -1,32 +1,34 @@
 <% if requests.present? %>
-  <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">sender</th>
-          <th scope="col">election</th> 
-          <th scope="col">request for</th>
-          <th scope="col">status</th>
-          <th colspan="2" scope="col">manage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% requests.each do |request| %>
-          <tr>
-            <td><%= request.request_sender.user_name %></td>
-            <td><%= request.election.title %></td>
-            <td><%= request.purpose %></td>
-            <td><%= request.status %></td>
-            <td><%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
-            <% if current_user.has_role? :super_admin or request.election.admin == current_user %>
-              <td><%= link_to "approve", approve_request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %></td>
-            <% end %>
-          </tr>
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">sender</th>
+        <th scope="col">election</th>
+        <th scope="col">request for</th>
+        <th scope="col">status</th>
+        <th colspan="2" scope="col">manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% requests.each do |request| %>
+      <tr>
+        <td><%= request.request_sender.user_name %></td>
+        <td><%= request.election.title %></td>
+        <td><%= request.purpose %></td>
+        <td><%= request.status %></td>
+        <td>
+          <%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %>
+        </td>
+        <% if (current_user.has_role? :super_admin or request.election.admin == current_user) and request.status == "pending" %>
+        <td><%= link_to "approve", approve_request_path(request.id) %></td>
         <% end %>
-      </tbody>
-    </table>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
   <%= will_paginate @requests, renderer: BootstrapPagination::Rails %>
-  </div>
+</div>
 <% else %>
-  <P style="color:red">No Record Found!!!</p>
+<P style="color:red">No Record Found!!!</p>
 <% end %>

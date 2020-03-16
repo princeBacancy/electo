@@ -22,6 +22,7 @@ class User < ApplicationRecord
                            foreign_key: 'message_sender_id'
   has_many :received_messages, class_name: 'Message',
                                foreign_key: 'message_receiver_id'
+  has_many :payments
 
   # validations
   validates_presence_of :user_name, :first_name, :last_name, :gender, :birth_date

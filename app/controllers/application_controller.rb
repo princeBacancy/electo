@@ -15,3 +15,4 @@ class ApplicationController < ActionController::Base
                                                                 birth_date])
   end
 end
+# PUBLISHABLE_KEY=pk_test_fhrGmxrnseUbOG8D2XT41Wqd00ymhAws81 SECRET_KEY=sk_test_VdLJyqQ4vNnvVoO7Ub8Mku5p00TOINOqvc rails s

@@ -13,6 +13,8 @@ gem 'pry-rails'
 gem 'rolify'
 gem 'whenever', require: false
 gem 'will_paginate-bootstrap'
+gem 'chartkick'
+gem 'stripe'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'

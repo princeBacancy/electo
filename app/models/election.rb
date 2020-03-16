@@ -13,7 +13,7 @@ class Election < ApplicationRecord
   has_many :pending_voters, dependent: :destroy
   has_many :voters, class_name: 'VotingList', foreign_key: 'election_id',
                     dependent: :destroy
-  
+  has_many :payments
   # enums & scopes
   enum status: %i[live waiting suspended]
   enum approval_status: %i[pending approved rejected]
