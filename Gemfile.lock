@@ -74,6 +74,7 @@ GEM
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
     character_set (1.4.0)
+    chartkick (3.3.1)
     childprocess (3.0.0)
     chronic (0.10.2)
     client_side_validations (16.1.0)
@@ -205,6 +206,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stripe (5.17.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -248,6 +250,7 @@ DEPENDENCIES
   byebug
   cancan
   capybara (>= 2.15)
+  chartkick
   client_side_validations
   devise
   hirb
@@ -265,6 +268,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
+  stripe
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 3.3.0)

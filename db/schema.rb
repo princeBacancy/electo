@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_02_070742) do
+ActiveRecord::Schema.define(version: 2020_03_16_060923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,17 @@ ActiveRecord::Schema.define(version: 2020_03_02_070742) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["message_receiver_id"], name: "index_messages_on_message_receiver_id"
     t.index ["message_sender_id"], name: "index_messages_on_message_sender_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "election_id", null: false
+    t.integer "amount"
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["election_id"], name: "index_payments_on_election_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "pending_voters", force: :cascade do |t|
@@ -127,6 +138,8 @@ ActiveRecord::Schema.define(version: 2020_03_02_070742) do
   end
 
   add_foreign_key "election_data", "elections"
+  add_foreign_key "payments", "elections"
+  add_foreign_key "payments", "users"
   add_foreign_key "pending_voters", "elections"
   add_foreign_key "winners", "election_data"
   add_foreign_key "winners", "elections"
