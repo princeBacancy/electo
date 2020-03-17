@@ -5,7 +5,7 @@ class ElectionDatum < ApplicationRecord
   # relations
   belongs_to :election, dependent: :destroy
   belongs_to :candidate, class_name: 'User', foreign_key: 'candidate_id'
-  has_one :winner
+  has_one :winner, dependent: :destroy
 
   # scopes
   scope :maximum_votes, -> { where(votes_count: maximum(:votes_count)) }

@@ -3,5 +3,6 @@
 <p>
   <%= @greeting %>, your request to be <%= @request.purpose %> in election <%= @request.election.title %> is approved.
   <% if @request.purpose == 'candidate'%>
-    You need to confirm your payment before election from here <%= link_ to "pay", payments_path %>
+    You need to confirm your payment before election from here <%= link_to "pay", payments_url %>
+  <% end %>  
 </p>

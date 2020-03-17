@@ -3,12 +3,15 @@
 # this controller manages all winner records
 class WinnersController < ApplicationController
   def index
-    @winners = Winner.includes(:election, election_datum: [:candidate])
+    @winners = Winner.eager_load(:election, election_datum: [:candidate])
                      .where(election_id: params[:id])
     @winners = @winners.paginate(per_page: 10, page: params[:page])
   end
 
   def destroy
-    Winner.find(params[:id]).destroy
+    winner = Winner.find_by(id: params[:id])
+    unless winner.destroy
+      flash[:status] = "failed!!!"
+    end
   end
 end

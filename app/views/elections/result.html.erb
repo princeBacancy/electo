@@ -27,7 +27,7 @@
     <% end %>
     <br />
     <% if @election.status == "suspended" and @election.election_data.exists?%>
-      <%= pie_chart @election.election_data.joins(:candidate).pluck(:user_name, :votes_count) %>
+      <%= pie_chart Election.piechart_data(@election) %>
       <% if @winners_data.count == 1 %>
         <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
       <% elsif %>

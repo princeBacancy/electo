@@ -1,67 +1,84 @@
+<%= javascript_pack_tag 'notifications', 'data-turbolinks-track': 'reload' %>
 <% if current_user %>
-<nav class="navbar navbar-expand-lg navbar-light custom-nav">
-  <a class="navbar-brand" href="/">
-    <%= image_tag("Group 12.jpg", size: "30x30", alt: "Logo", class: "d-inline-block align-top")%>
-    <b><i>Electo</i></b>
-  </a>
+  <nav class="navbar navbar-expand-lg navbar-light custom-nav">
+    <a class="navbar-brand" href="/">
+      <%= image_tag("Group 12.jpg", size: "30x30", alt: "Logo", class: "d-inline-block align-top")%>
+      <b><i>Electo</i></b>
+    </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Election
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to "My Elections", my_elections_elections_path , class: "dropdown-item" %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "Create Election", new_election_path, class: "dropdown-item"%>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Request
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to "Send Requests", send_requests_request_path(current_user.id) , class: "dropdown-item" %>
-          <%= link_to "Received Requests", received_requests_request_path(current_user.id) , class: "dropdown-item" %>
-          <% if current_user.has_role? :super_admin %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "All Requests", requests_path, class: "dropdown-item"%>
-          <% end %>
-        </div>
-      </li>
-      <% if current_user.has_role? :super_admin %>
-        <li class="nav-item">
-          <%= link_to "payments", payments_path(), class: "nav-link" %>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Election
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to "My Elections", my_elections_elections_path , class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Create Election", new_election_path, class: "dropdown-item"%>
+          </div>
         </li>
-        <li class="nav-item">
-          <%= link_to "ROOT ACCESS", admin_index_path, class: "nav-link", style:"color:crimson; font-weight:bold" %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Request
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to "Send Requests", send_requests_request_path(current_user.id) , class: "dropdown-item" %>
+            <%= link_to "Received Requests", received_requests_request_path(current_user.id) , class: "dropdown-item" %>
+            <% if current_user.has_role? :super_admin %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "All Requests", requests_path, class: "dropdown-item"%>
+            <% end %>
+          </div>
         </li>
-      <% else %>
-        <li class="nav-item">
-          <%= link_to "pending payments", payments_path(), class: "nav-link" %>
+        <% if current_user.has_role? :super_admin %>
+          <li class="nav-item">
+            <%= link_to "payments", payments_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "ROOT ACCESS", admin_index_path, class: "nav-link", style:"color:crimson; font-weight:bold" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "pending payments", payments_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+      <ul class="navbar-nav mr-right">
+      <div id="refresh">
+        <li class="nav-item avatar dropdown">
+          <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="badge badge-danger ml-2"><%= get_notifications.count %></span>
+            <i class="fas fa-bell"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
+            <% if @notifications.count > 0 %>  
+              <a style="color:red" class="dropdown-item waves-effect waves-light" id="mark_as_read" href="#">mark as read</a>
+            <% end %>
+            <% @notifications.each do |notification| %>
+              <a class="dropdown-item waves-effect waves-light" href="#"><%= notification.notification %></a>
+            <% end %>
+          </div>  
         </li>
-      <% end %>
-    </ul>
-    <ul class="navbar-nav mr-right">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <%= current_user.user_name %>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link" %>
-          <%= link_to "Logout", destroy_user_session_path, method: "delete", class: "nav-link" %>
         </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <%= current_user.user_name %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link" %>
+            <%= link_to "Logout", destroy_user_session_path, method: "delete", class: "nav-link" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
 <% end %>

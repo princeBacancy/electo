@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :received_messages, class_name: 'Message',
                                foreign_key: 'message_receiver_id'
   has_many :payments
+  has_many :notifications, foreign_key: 'recipient_id'
 
   # validations
   validates_presence_of :user_name, :first_name, :last_name, :gender, :birth_date
@@ -35,6 +36,7 @@ class User < ApplicationRecord
                                  message: 'password contain minimum 6 character,
                                         atleast 1 uppercase letter 1 number and 1 symbol' }
   validates :password_confirmation, presence: true
+  
   # Include default devise modules. Others available are:
   # , :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

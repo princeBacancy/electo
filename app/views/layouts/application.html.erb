@@ -27,3 +27,54 @@
     <%= yield %>
   </body>
 </html>
+<%# 
+<script>
+      class Notificationsa {
+        constructor() {
+            this.handleSuccess = this.handleSuccess.bind(this);
+            this.notifications = $("[data-behavior='notifications']");
+            if (this.notifications.length > 0) { 
+              this.setup(); 
+              $("[data-behavior='notifications-link']").on("click", this.handleClick);
+          setInterval((() => {
+            return this.getNewNotifications();
+          }
+          ), 10000);
+            } 
+        }
+        setup() { 
+            console.log(this.notifications);
+            return $.ajax({
+                url: "/notifications.json",
+                dataType: "JSON",
+                method: "GET",
+                success: this.handleSuccess
+            });
+        }
+        getNewNotifications() {
+          return $.ajax({
+            url: "/notifications.json",
+            dataType: "JSON",
+            method: "GET",
+            success: this.handleSuccess
+          });
+        }
+        handleClick(e) {
+          return $.ajax({
+            url: "/notifications/mark_as_read",
+            dataType: "JSON",
+            method: "POST",
+            success() {
+              return $("[data-behavior='unread-count']").text(0);
+            }
+          });
+        }
+        handleSuccess(data) {
+            const items = $.map(data, notification => `<li><a style="color:#000;" href='${notification.url}s'>${notification.actor.username} ${notification.action} ${notification.notifiable.type}</a><li><hr>`);
+            $("[data-behavior='unread-count']").text(parseInt(items.length) || "");
+            return $("[data-behavior='notification-items']").html(items);
+        }
+      }
+      jQuery(() => new Notificationsa);
+    </script> %>
+

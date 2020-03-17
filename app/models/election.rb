@@ -14,6 +14,7 @@ class Election < ApplicationRecord
   has_many :voters, class_name: 'VotingList', foreign_key: 'election_id',
                     dependent: :destroy
   has_many :payments
+  
   # enums & scopes
   enum status: %i[live waiting suspended]
   enum approval_status: %i[pending approved rejected]
@@ -31,6 +32,11 @@ class Election < ApplicationRecord
     ConfirmElectionMailer.confirmation(self).deliver
   end
 
+  def self.piechart_data(election)
+    election.election_data.joins(:candidate).pluck(:user_name, :votes_count)
+  end
+
+  #schedular
   def self.trigger
     puts 'in trigger'
     elections = Election.includes(:requests).where(approval_status: approved)
