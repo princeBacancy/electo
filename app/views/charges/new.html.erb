@@ -10,5 +10,9 @@
     </label>
 </article>
 
-<script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="<%= Rails.configuration.stripe[:publishable_key] %>" data-description="Candidate Charges" data-amount="" data-locale="auto"></script>
+<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+data-description="A month's subscription"
+data-amount=""
+data-locale="auto"></script>
 <% end %>

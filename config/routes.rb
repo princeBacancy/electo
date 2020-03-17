@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
-  resources :payments, only: %i[index create]
+  resources :payments, only: %i[index create] do
+    member do
+      get :election_payments
+    end
+  end
   
   resources :elections do
     member do
@@ -63,6 +67,11 @@ Rails.application.routes.draw do
   end
 
   resources :charges
+  resources :notifications do
+    collection do
+      get :mark_as_read
+    end
+  end
   
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

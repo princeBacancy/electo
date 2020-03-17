@@ -5,24 +5,24 @@ class RequestsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @requests = Request.includes(:request_sender, election: [:admin]).all
-    @requests = @requests.paginate(per_page: 10, page: params[:page])
+    @requests = Request.eager_load(:request_sender, election: [:admin])
+                       .paginate(per_page: 10, page: params[:page])
   end
 
   def send_requests
-    @requests = Request.includes(:request_sender, election: [:admin])
+    @requests = Request.eager_load(:request_sender, election: [:admin])
                        .where(request_sender_id: params[:id])
-    @requests = @requests.paginate(per_page: 10, page: params[:page])
+                       .paginate(per_page: 10, page: params[:page])
   end
 
   def received_requests
     @requests = Request.joins(:election).where('elections.admin_id=?', params[:id])
-    @requests = @requests.paginate(per_page: 10, page: params[:page])
+                       .paginate(per_page: 10, page: params[:page])
   end
 
   def election_requests
     @requests = Request.where(election_id: params[:id])
-    @requests = @requests.paginate(per_page: 10, page: params[:page])
+                       .paginate(per_page: 10, page: params[:page])
   end
 
   def new
@@ -36,7 +36,7 @@ class RequestsController < ApplicationController
   end
 
   def approve
-    @request = Request.includes(:election).find(params[:id])
+    @request = Request.includes(:election).find_by(id: params[:id])
     if @request.purpose == 'candidate'
       @request.election.payments.build(user_id: @request.request_sender_id,
                                        amount: 50).save
@@ -49,7 +49,7 @@ class RequestsController < ApplicationController
   end
 
   def destroy
-    @request = Request.find(params[:id])
+    @request = Request.find_by(id: params[:id])
 
     flash[:status] = if @request.destroy
                        'deleted successfuly'

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ChargesController < ApplicationController
-  
+
   def new
-    @@election = Election.includes(:election_data).find(params[:election_id])
+    @@election = Election.includes(:election_data, :payments).find(params[:election_id])
   end
 
   def create

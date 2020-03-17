@@ -17,4 +17,7 @@
   <% if election.winners.present? %>
   |  <%= link_to "Winners", winner_path(election.id) %> |
   <% end %>
+  <% if election.payments.present? %>
+  |  <%= link_to "payments", election_payments_payment_path(election.id) %> |
+  <% end %>
 <% end %>

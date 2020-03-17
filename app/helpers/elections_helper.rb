@@ -18,4 +18,12 @@ module ElectionsHelper
       'Caution!!! => you are not authorized to vote'
     end
   end
+
+  def deadline?(election)
+    election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M')
+  end
+
+  def request_exist?(election)
+    election.requests.exists?(request_sender_id: current_user.id, purpose: :voter, status: :approved)
+  end
 end
