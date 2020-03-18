@@ -2,7 +2,7 @@
 
 # election management
 class ElectionsController < ApplicationController
-  before_action :find_election, only: %i[show edit update confirm destroy end]
+  before_action :find_election, only: %i[edit update confirm destroy end]
   before_action :authenticate_user!
 
   def index
@@ -22,10 +22,8 @@ class ElectionsController < ApplicationController
   end
 
   def create
-    @election = Election.new(election_params)
-    @election.admin_id = current_user.id
-    current_user.elections.build(election_params)
-    if @election.save
+    @election = current_user.elections.build(election_params)
+    if @election&.save
       flash[:status] = 'request send to super admin for approval'
       redirect_to :root
     else
@@ -35,34 +33,34 @@ class ElectionsController < ApplicationController
   end
 
   def show
-    # show create start
-    @election = @election.includes(:pending_voters, :requests)
+    @election = Election.includes(:pending_voters, :requests)
+                        .find_by(id: params[:id])
   end
 
   def update
-    begin
-      @election.update(election_params)
+    if @election&.update(election_params)
       redirect_to :root
-    rescue => e   
+    else
       flash[:errors] = e.message
       render new_election_path
     end
   end
 
   def confirm
-    if @election.update(approval_status: :approved)
+    if @election&.update(approval_status: :approved)
       ConfirmedElectionMailer.confirmed(@election).deliver
-      if current_user.has_role?(:super_admin)
+      if current_user
         flash[:status] = 'thank you for approval'
         redirect_to :root
       end
-    else
+    elsif current_user
       flash[:status] = 'failed!!!'
+      render :root
     end
   end
 
   def destroy
-    if @election.destroy
+    if @election&.destroy
       redirect_to :root
       flash[:status] = 'destroyed!!!'
     else
@@ -73,41 +71,46 @@ class ElectionsController < ApplicationController
   def start
     @election = Election.eager_load(:requests, :voters, election_data: :candidate)
                         .find_by(id: params[:id])
-    if (current_user == @election.admin) &&
+    if @election && (current_user == @election.admin) &&
        (@election.approval_status == 'approved') &&
        (@election.status == 'waiting')
-      unless start_election(@election)
-        flash[:status] = 'failed!!!'
-      end
-      notify_voters(@election)
+      @election.update
+      start_election(@election)
+    else
+      flash[:status] = 'failed!!!'
+      render 'show'
     end
   end
 
   def vote
     @election = Election.includes(:voters, :election_data).find_by(id: params[:id])
-    if !@election.voters.exists?(voter_id: current_user.id) &&
+    if @election && !@election.voters.exists?(voter_id: current_user.id) &&
        @election.status == 'live'
       if ElectionDatum.increase_vote(params)
         @election.voters.build(voter_id: current_user.id).save
         flash[:status] = "voted successfully to #{params[:election][:candidates]}"
         redirect_to result_election_path(@election.id)
       else
-        flash[:status] = "failed to vote"
+        flash[:status] = 'failed to vote'
         redirect_to start_election_path
       end
     end
   end
 
   def end
-    if current_user == @election.admin && @election.status == 'live' && @election.update(status: :suspended)
-      flash[:status] = "failed!!!"
+    if @election && current_user == @election.admin && @election.status == 'live' && @election
+       .update(status: :suspended)
+       redirect_to result_election_path(@election.id)
+    else
+      flash[:status] = 'failed!!!'
+      render 'show'
     end
-    redirect_to result_election_path(@election.id)
+    
   end
 
   def result
     @election = Election.includes(:election_data, :requests).find_by(id: params[:id])
-    if (@election.status == 'suspended') && @election.election_data
+    if @election && (@election.status == 'suspended') && @election.election_data
       @winners_data = @election.election_data.maximum_votes.includes(:candidate)
       @winners_data.each do |winner|
         @election.winners.build(election_datum_id: winner.id).save
@@ -125,6 +128,13 @@ class ElectionsController < ApplicationController
 
   private
 
+  def start_election(election)
+    election.update(status: 'live', deadline_for_registration: DateTime.now,
+                    start_time: DateTime.now,
+                    end_time: DateTime.now)
+    notify_voters(election)
+  end
+
   def notify_voters(election)
     voters = election.requests.where(status: :approved)
     voters.each do |voter|
@@ -133,13 +143,7 @@ class ElectionsController < ApplicationController
   end
 
   def find_election
-    @election = Election.find(params[:id])
-  end
-
-  def start_election(election)
-    election.update(status: 'live', deadline_for_registration: DateTime.now,
-      start_time: DateTime.now,
-      end_time: DateTime.now)
+    @election = Election.find_by(id: params[:id])
   end
 
   def election_params

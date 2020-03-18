@@ -37,12 +37,12 @@ class RequestsController < ApplicationController
 
   def approve
     @request = Request.includes(:election).find_by(id: params[:id])
-    if @request.purpose == 'candidate'
+    if @request && @request.purpose == 'candidate'
       @request.election.payments.build(user_id: @request.request_sender_id,
                                        amount: 50).save
     end
     RequestConfirmedMailer.request_confirmed(@request).deliver
-    if @request.update(status: :approved)
+    if @request && @request.update(status: :approved)
       flash[:status] = 'request approved!!!'
       redirect_to received_requests_request_path(current_user.id)
     end
@@ -51,7 +51,7 @@ class RequestsController < ApplicationController
   def destroy
     @request = Request.find_by(id: params[:id])
 
-    flash[:status] = if @request.destroy
+    flash[:status] = if @request && @request.destroy
                        'deleted successfuly'
                      else
                        'failed!!!'
@@ -69,7 +69,7 @@ class RequestsController < ApplicationController
 
   def new_request
     request = Request.create_request(current_user, params)
-    if !Request.time_out?(request)
+    if request && !Request.time_out?(request)
       if request.save
         flash[:status] = 'request send to election admin!!!'
         redirect_to send_requests_request_path(current_user.id)
