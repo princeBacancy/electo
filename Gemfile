@@ -4,17 +4,22 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
+
+# gems
 gem 'cancan'
+gem 'chartkick'
 gem 'client_side_validations'
 gem 'devise'
 gem 'jquery-rails'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 gem 'pry-nav'
 gem 'pry-rails'
 gem 'rolify'
+gem 'stripe'
 gem 'whenever', require: false
 gem 'will_paginate-bootstrap'
-gem 'chartkick'
-gem 'stripe'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
