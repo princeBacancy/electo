@@ -14,6 +14,7 @@ class Election < ApplicationRecord
   has_many :voters, class_name: 'VotingList', foreign_key: 'election_id',
                     dependent: :destroy
   has_many :payments
+  has_many :messages
   
   # enums & scopes
   enum status: %i[live waiting suspended]

@@ -60,7 +60,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
             <% if @notifications.count > 0 %>  
-              <a style="color:red" class="dropdown-item waves-effect waves-light" id="mark_as_read" href="#">mark as read</a>
+              <a style="color:red" class="dropdown-item waves-effect waves-light" id="mark_as_read" href="#">mark all as read</a>
             <% end %>
             <% @notifications.each do |notification| %>
               <a class="dropdown-item waves-effect waves-light" href="#"><%= notification.notification %></a>

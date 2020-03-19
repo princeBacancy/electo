@@ -1,0 +1,9 @@
+<%= form_with model:@message, remote: true do |f| %>
+  <%= f.text_field :message %>
+  <%= f.submit "send", id:"submit"%>
+<% end %>
+
+<div id="messages">
+
+</div>
+
