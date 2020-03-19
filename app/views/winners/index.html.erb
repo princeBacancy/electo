@@ -14,7 +14,7 @@
       <% @winners.each do |winner| %>
       <tr>
         <td><%= winner.election.title %></td>
-        <% if current_user.has_role? :super_admin %>
+        <% if super_admin? %>
         <td><%= link_to winner.election_datum.user_name , show_user_admin_path(winner.election_datum.candidate_id) %>
         </td>
         <% else %>

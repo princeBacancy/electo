@@ -4,7 +4,7 @@
   <table class="table">
     <thead>
       <tr>
-        <% if current_user.has_role? :super_admin %>
+        <% if super_admin? %>
           <th scope="col">candidate</th>
         <% end %>
           <th scope="col">election</th>
@@ -16,13 +16,13 @@
     <tbody>
       <% @payments.each do |payment| %>
       <tr>
-        <% if current_user.has_role? :super_admin %>
+        <% if super_admin? %>
           <td><%= payment.user.user_name %></td>
         <% end %>
         <td><%= payment.election.title %></td>
         <td><%= payment.amount %></td>
         <td><%= payment.status %></td>
-        <% if !current_user.has_role? :super_admin or current_user == payment.user %>
+        <% if !super_admin? or current_user == payment.user %>
           <td><%= link_to "pay now", new_charge_path(election_id: payment.election_id) %>
         <% end %>
           

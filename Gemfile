@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.0'
 
 # gems
+gem 'activerecord-session_store'
 gem 'cancan'
 gem 'chartkick'
 gem 'client_side_validations'

@@ -3,7 +3,7 @@
   <div class="container-fluid">
   <h5>Elections</h5>
     <% @elections.each do |election| %>
-      <% if (election.approval_status == "approved" and current_user.id != election.admin_id) or current_user.has_role? :super_admin%>
+      <% if (election.approval_status == "approved" and !election_admin?(election)) or super_admin? %>
         <%= render partial: 'admin/elections', locals: { election: election } %>
       <% end %>
     <% end %>

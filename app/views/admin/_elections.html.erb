@@ -15,7 +15,7 @@
       <% else %>
         <span style="color:red">suspended</span>
       <% end %><br>
-    <% if election.admin == current_user %>
+    <% if election_admin?(election) %>
       <b> approval status : </b> <%= election.approval_status %>
     <% end %><br>  
       <%= render partial: 'admin/election_management',locals: { election: election }%>
