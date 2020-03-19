@@ -20,7 +20,7 @@
         <td>
           <%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %>
         </td>
-        <% if (current_user.has_role? :super_admin or request.election.admin == current_user) and request.status == "pending" %>
+        <% if (super_admin? or election_admin?(request.election)) and request.status == "pending" %>
         <td><%= link_to "approve", approve_request_path(request.id) %></td>
         <% end %>
       </tr>

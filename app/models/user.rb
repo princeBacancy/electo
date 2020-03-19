@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
   # validations
   validates_presence_of :user_name, :first_name, :last_name, :gender, :birth_date, unless: :login_social
-  validates :user_name, uniqueness: true
+  validates :user_name, uniqueness: true, unless: :login_social
   validates :email, presence: true, uniqueness: true,
                     format: { with: /\A(\w+\.*)+@\w+(\.\w{2,3})+\Z/,
                               message: 'Email should be in this format -> abc@xyz.com' }
@@ -56,7 +56,6 @@ class User < ApplicationRecord
   end
   
   def self.from_omniauth(auth)
-    binding.pry
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]

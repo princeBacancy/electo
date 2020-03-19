@@ -1,5 +1,5 @@
-<% if current_user.has_role? :super_admin or current_user == election.admin %>
-  <% if current_user.has_role? :super_admin and election.approval_status == "pending" %>
+<% if super_admin? or election_admin?(election) %>
+  <% if super_admin? and election.approval_status == "pending" %>
     <%= link_to "confirm", confirm_election_path(election.id) %><br>
   <% end %>
   | <%= link_to "Edit", edit_election_path(election.id) %>

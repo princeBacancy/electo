@@ -14,7 +14,7 @@
       <% @votes.each do |vote| %>
       <tr>
         <td><%= vote.election.title %></td>
-        <% if current_user.has_role? :super_admin %>
+        <% if super_admin? %>
         <td><%= link_to vote.voter.user_name , show_user_admin_path(vote.voter_id) %></td>
         <% else %>
         <td><%= vote.voter.user_name %></td>

@@ -1,4 +1,4 @@
-<% if current_user.has_role? :super_admin %>
+<% if super_admin? %>
   <% if @users.present? %>
     <div class="container">
     <h5>Users</h5>

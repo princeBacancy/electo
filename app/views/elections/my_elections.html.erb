@@ -2,7 +2,7 @@
 <% if @elections.exists? %>
   <div class="container-fluid">
     <% @elections.each do |election| %>
-      <% if current_user.id == election.admin_id %>
+      <% if election_admin?(election) %>
         <%= render partial: 'admin/elections', locals: { election: election } %>
       <% end %>
     <% end %>
