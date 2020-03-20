@@ -1,0 +1,9 @@
+<%= form_with model:@message, remote: true do |f| %>
+  <%= f.text_field :message, id: "text-box" %>
+  <%= f.hidden_field :election_id, value: @election_id %>
+  <%= f.submit "send", id: "submit" %>
+<% end %>
+
+<div id="<%= @election_id%>">
+</div>
+

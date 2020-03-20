@@ -2,8 +2,7 @@ import consumer from "./consumer"
 
 consumer.subscriptions.create("ERoomChannel", {
     connected() {
-        console.log("yay")
-            // Called when the subscription is ready for use on the server
+        // Called when the subscription is ready for use on the server
     },
 
     disconnected() {
@@ -11,26 +10,8 @@ consumer.subscriptions.create("ERoomChannel", {
     },
 
     received(data) {
-        console.log(data.content)
-        $('#messages').append('<div class="msg">' + data.content + '</div>')
+        console.log(data.message)
+        $('#' + data.election_id).append('<div class="msg">' + data.message + '</div>')
             // Called when there's incoming data on the websocket for this channel
     }
 });
-
-var submit_messages;
-$(document).on('turbolinks:load', function() {
-    console.log("function")
-    $('commit').on('keydown', function() {
-        debugger
-        console.log("submit");
-        if (event.keyCode === 13) {
-            $('input').click()
-            event.target.value = ''
-            event.preventDefault()
-        }
-    });
-});
-
-submit_messages = function() {
-
-}

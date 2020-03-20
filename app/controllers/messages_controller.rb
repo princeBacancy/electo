@@ -3,14 +3,17 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
   def new
+    @election_id = params[:election_id]
     @message = Message.new
   end
 
   def create
-    message = Message.new(message_params)
+    message = current_user.messages.build(election_id: params[:message][:election_id], message: params[:message][:message])
     if message.save
       ActionCable.server.broadcast 'e_room_channel',
-                                   content: message.message
+                                   message: message.message,
+                                   sender: message.message_sender.user_name,
+                                   election_id: message.election.id
     else
       flash[:status] = 'failed'
     end
@@ -22,7 +25,7 @@ class MessagesController < ApplicationController
 
   private
 
-  def message_params
-    params.require(:message).permit(:message_sender, :message, :election)
-  end
+  # def message_params
+  #   params.require(:message).permit(:message_sender, :message, :election)
+  # end
 end
