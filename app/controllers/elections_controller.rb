@@ -38,7 +38,7 @@ class ElectionsController < ApplicationController
   end
 
   def update
-    if @election&.update(election_params)
+    if @election.update(election_params)
       redirect_to :root
     else
       flash[:errors] = e.message
@@ -48,6 +48,9 @@ class ElectionsController < ApplicationController
 
   def confirm
     if @election&.update(approval_status: :approved)
+      notification = @election.admin.notifications.build(notification: "your election #{@election.title} is approved", read_at: nil)
+      flash[:status] = 'notification problem' unless notification&.save
+
       ConfirmedElectionMailer.confirmed(@election).deliver
       if current_user
         flash[:status] = 'thank you for approval'
@@ -74,9 +77,8 @@ class ElectionsController < ApplicationController
     if @election && (current_user == @election.admin) &&
        (@election.approval_status == 'approved') &&
        (@election.status == 'waiting')
-      @election.update
       start_election(@election)
-    else
+    elsif !@election
       flash[:status] = 'failed!!!'
       render 'show'
     end
@@ -100,12 +102,11 @@ class ElectionsController < ApplicationController
   def end
     if @election && current_user == @election.admin && @election.status == 'live' && @election
        .update(status: :suspended)
-       redirect_to result_election_path(@election.id)
+      redirect_to result_election_path(@election.id)
     else
       flash[:status] = 'failed!!!'
       render 'show'
     end
-    
   end
 
   def result

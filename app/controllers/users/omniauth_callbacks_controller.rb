@@ -4,7 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def facebook
     @user = User.from_omniauth(request.env["omniauth.auth"])
-
+    flash[:status] = @user.errors.full_messages if @user.errors.any?
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
@@ -15,13 +15,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def google_oauth2
-    @user = User.from_omniauth(request.env["omniauth.auth"])
-
+    @user =  User.from_omniauth(request.env["omniauth.auth"])
+    flash[:status] = @user.errors.full_messages if @user.errors.any?
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication
       set_flash_message(:notice, :success, :kind => "Google_oauth2") if is_navigational_format?
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
+      session["devise.google_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end
   end

@@ -41,8 +41,11 @@ class RequestsController < ApplicationController
       @request.election.payments.build(user_id: @request.request_sender_id,
                                        amount: 50).save
     end
+    notification = @request.request_sender.notifications.build(notification: "your request to be #{@request.purpose} in election #{@request.election.title} is approved",
+                                                               read_at: nil)
+    flash[:status] = 'notification problem' unless notification&.save
     RequestConfirmedMailer.request_confirmed(@request).deliver
-    if @request && @request.update(status: :approved)
+    if @request&.update(status: :approved)
       flash[:status] = 'request approved!!!'
       redirect_to received_requests_request_path(current_user.id)
     end
@@ -71,6 +74,10 @@ class RequestsController < ApplicationController
     request = Request.create_request(current_user, params)
     if request && !Request.time_out?(request)
       if request.save
+
+        notification = @request.election.admin.notifications.build(notification: "new request from #{@request.request_sender.user_name} to be #{@request.purpose} in election #{@request.election.title}",
+                                                                   read_at: nil)
+        flash[:status] = 'notification problem' unless notification&.save
         flash[:status] = 'request send to election admin!!!'
         redirect_to send_requests_request_path(current_user.id)
       else

@@ -20,8 +20,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
       request = Request.new(request_sender_id: user.id, election_id:
                             pending_voter.election.id,
                             purpose: 'voter', status: :approved)
-      request.save
-      pending_voter.destroy
+      if request && request.save
+        unless pending_voter.destroy
+          flash[:status] = "failed!!!"
+        end
+      end
     end
   end
 

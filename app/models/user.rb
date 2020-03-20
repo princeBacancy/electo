@@ -20,11 +20,10 @@ class User < ApplicationRecord
                                foreign_key: 'request_receiver_id'
   has_many :send_messages, class_name: 'Message',
                            foreign_key: 'message_sender_id'
-  has_many :received_messages, class_name: 'Message',
-                               foreign_key: 'message_receiver_id'
   has_many :payments
   has_many :notifications, foreign_key: 'recipient_id'
-
+  has_many :messages, foreign_key: 'message_sender_id'
+  
   # attr_accessor :login_social?
   attr_accessor :login_social
 

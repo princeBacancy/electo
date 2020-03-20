@@ -21,7 +21,17 @@
         <% end %>
       </p>
     </div>
+    <br><br>
 
+    <div id="chat-box">
+      <% if @election.messages.exists? %>
+        <%= link_to "Open Chat", new_message_path(election_id: @election.id), remote: true, id: "open_chat" %>
+      <% elsif @election.admin == current_user %>
+        <%= link_to "Create Chat", new_message_path(election_id: @election.id), remote: true, id: "create_chat" %>
+      <% end %>
+    </div>
+
+  <br><br>
     <div>
       <% if election_admin?(@election) %>
         <div>
@@ -52,6 +62,7 @@
               <%= link_to "result", result_election_path(@election.id), class: "btn btn-warning" %>
           <% end %>
         </div>
+
       <% elsif @election.status == "waiting" and !deadline?(@election) %>
         <%= link_to "request to be voter", request_path(@election.id, type: :voter), class: "btn btn-light" %>
         <%= link_to "request to be candidate", request_path(@election.id, type: :candidate), class: "btn btn-dark", style:'color:white;' %><br />

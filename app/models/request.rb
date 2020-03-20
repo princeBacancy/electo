@@ -10,12 +10,12 @@ class Request < ApplicationRecord
                               foreign_key: 'request_sender_id'
   belongs_to :election
 
-  # enum
+  # enum  & scope
   enum status: %i[pending approved rejected]
 
   # validations
   validates_presence_of :request_sender_id, :election_id, :purpose
-  validates :request_sender_id, uniqueness: {scope: [:election_id, :purpose]}
+  validates :request_sender_id, uniqueness: { scope: %i[election_id purpose] }
 
   def self.get_request(current_user, params)
     Request.includes(:election).find_by(election_id: params[:id],
@@ -48,8 +48,10 @@ class Request < ApplicationRecord
         request = election.requests.find_by(request_sender_id: user.id,
                                             purpose: 'voter')
       end
-      election.requests.build(request_sender_id: user.id,
-                              purpose: 'voter', status: :approved).save if user && !request
+      if user && !request
+        election.requests.build(request_sender_id: user.id,
+                                purpose: 'voter', status: :approved).save
+      end
       VotingPermissionMailer.voting_permission(email, election_id).deliver
       if !user && !pending_voter
         election.pending_voters.build(email: email).save
