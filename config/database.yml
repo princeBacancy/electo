@@ -82,4 +82,4 @@ production:
   <<: *default
   database: electo_production
   username: electo
-  # password: <%= ENV['ELECTO_DATABASE_PASSWORD'] %>
+  password: <%= ENV['ELECTO_DATABASE_PASSWORD'] %>
