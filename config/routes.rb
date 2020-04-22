@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  default_url_options host: "https://enigmatic-mesa-31735.herokuapp.com/"
+  default_url_options host: "https://enigmatic-mesa-31735.herokuapp.com"
   root to: 'elections#index'
   devise_for :users, controllers: {
     registrations: 'users/registrations',
