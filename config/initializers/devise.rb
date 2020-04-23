@@ -5,7 +5,7 @@
 Devise.setup do |config|
 
   # omniauth-facebook login config
-  config.omniauth :facebook, Rails.application.credentials.omniauth[:facebook][:app_id], Rails.application.credentials.omniauth[:facebook][:app_secret], callback_url: "https://enigmatic-mesa-31735.herokuapp.com/users/auth/facebook/callback", provider_ignores_state: true
+  config.omniauth :facebook, Rails.application.credentials.omniauth[:facebook][:app_id], Rails.application.credentials.omniauth[:facebook][:app_secret], provider_ignores_state: true
 
   config.omniauth :google_oauth2, Rails.application.credentials.omniauth[:google][:app_id], Rails.application.credentials.omniauth[:google][:app_secret], provider_ignores_state: true 
   # The secret key used by Devise. Devise uses this key to generate
