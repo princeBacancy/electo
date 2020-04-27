@@ -24,14 +24,10 @@
     <br><br>
 
     <div id="chat-box">
-      <% if @election.messages.exists? %>
-        <%= link_to "Open Chat", new_message_path(election_id: @election.id), remote: true, id: "open_chat" %>
-      <% elsif @election.admin == current_user %>
-        <%= link_to "Create Chat", new_message_path(election_id: @election.id), remote: true, id: "create_chat" %>
-      <% end %>
+      <%= render partial: 'messages/message' %>
     </div>
 
-  <br><br>
+    <br><br>
     <div>
       <% if election_admin?(@election) %>
         <div>

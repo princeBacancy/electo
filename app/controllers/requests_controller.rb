@@ -43,6 +43,8 @@ class RequestsController < ApplicationController
     end
     notification = @request.request_sender.notifications.build(notification: "your request to be #{@request.purpose} in election #{@request.election.title} is approved",
                                                                read_at: nil)
+    ActionCable.server.broadcast('notification_channel',
+                                 notification: notification)
     flash[:status] = 'notification problem' unless notification&.save
     RequestConfirmedMailer.request_confirmed(@request).deliver
     if @request&.update(status: :approved)
@@ -75,8 +77,10 @@ class RequestsController < ApplicationController
     if request && !Request.time_out?(request)
       if request.save
 
-        notification = @request.election.admin.notifications.build(notification: "new request from #{@request.request_sender.user_name} to be #{@request.purpose} in election #{@request.election.title}",
+        notification = request.election.admin.notifications.build(notification: "new request from #{request.request_sender.user_name} to be #{request.purpose} in election #{request.election.title}",
                                                                    read_at: nil)
+        ActionCable.server.broadcast('notification_channel',
+                                     notification: notification)
         flash[:status] = 'notification problem' unless notification&.save
         flash[:status] = 'request send to election admin!!!'
         redirect_to send_requests_request_path(current_user.id)

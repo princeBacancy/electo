@@ -1,9 +1,45 @@
-<%= form_with model:@message, remote: true do |f| %>
-  <%= f.text_field :message, id: "text-box" %>
-  <%= f.hidden_field :election_id, value: @election_id %>
-  <%= f.submit "send", id: "submit" %>
+
+<% if @election.messages.exists? %>
+  <button type="button" id="chat_button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open chat-box</button>
+<% elsif @election.admin == current_user %>
+  <button type="button" id="chat_button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Create chat-box</button>
 <% end %>
-
-<div id="<%= @election_id%>">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Election <%= @election.title %>'s chat-box</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Messages:</label>
+          <div class="border overflow-auto" id="scroll" style="height:250px;">
+            <% @election.messages.each do |message|%>
+              <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1"><%= message.message %></h5>
+                  <small class="text-muted"><%= message.created_at.strftime('%d-%h-%y %H:%M') %></small>
+                </div>
+                <small class="text-muted"><%= message.message_sender.user_name %></small>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message-text" class="col-form-label">New message:</label>
+          <%= form_with model: Message.new, url: messages_path, local: :true, method: :post do |f| %>
+            <%= f.text_field :message, class: "form-control", id: "message-text" %>
+            <%= f.number_field :election_id, value: @election.id, type: 'hidden' %>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <%= f.submit 'Send message', class: "btn btn-primary", id: "message_submit"%>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-

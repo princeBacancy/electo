@@ -5,6 +5,7 @@
 
 //= require rails.validations
 //= require notifications
+Notification.requestPermission().then(function(result) {})
 
 require("@rails/ujs").start()
 require("turbolinks").start()
@@ -14,6 +15,7 @@ require("channels")
 require("jquery")
 require("chartkick")
 require("chart.js")
+require("packs/notifications")
 
 import "bootstrap"
 import "../stylesheets/application"
@@ -31,3 +33,9 @@ import "../stylesheets/application"
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+$(document).ready(function() {
+    $("#chat_button").click(function() {
+        $(".overflow-auto").scrollTop = $(".overflow-auto").scrollHeight;
+    });
+});

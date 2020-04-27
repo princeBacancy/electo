@@ -49,6 +49,8 @@ class ElectionsController < ApplicationController
   def confirm
     if @election&.update(approval_status: :approved)
       notification = @election.admin.notifications.build(notification: "your election #{@election.title} is approved", read_at: nil)
+      ActionCable.server.broadcast('notification_channel',
+                                   notification: notification)
       flash[:status] = 'notification problem' unless notification&.save
 
       ConfirmedElectionMailer.confirmed(@election).deliver
