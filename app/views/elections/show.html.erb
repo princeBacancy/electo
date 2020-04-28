@@ -24,7 +24,7 @@
     <br><br>
 
     <div id="chat-box">
-      <%= render partial: 'messages/message' %>
+      <%= link_to "chat-box", new_message_path(election_id: @election.id) %>
     </div>
 
     <br><br>

@@ -10,6 +10,6 @@ consumer.subscriptions.create("ERoomChannel", {
     },
 
     received(data) {
-        $("#exampleModal").load(window.location.href + " #exampleModal");
+        $('.chat-box').load(window.location.href + ' .chat-box');
     }
 });

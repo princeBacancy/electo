@@ -2,8 +2,9 @@
 
 class MessagesController < ApplicationController
   before_action :authenticate_user!
+
   def new
-    @election_id = params[:election_id]
+    @election = Election.eager_load(messages: [:message_sender]).order("messages.created_at DESC").find_by(id: params[:election_id])
     @message = Message.new
   end
 
