@@ -1,47 +1,49 @@
-<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
 <div class="outer">
-<div></div>
-<div class="inner">
-<div class="modal-header">
-  <h5 class="modal-title" id="exampleModalLabel">Election <%= @election.title %>'s chat-box</h5>
-</div>
-<div class="chat-box">
-  <div class="form-group">
-    <label for="recipient-name" class="col-form-label">Messages:</label>
-    <div class="border overflow-auto" id="scroll" style="height:250px;">
-      <% @election.messages.each do |message|%>
-        <% if message.message_sender == current_user %>
-          <div class="list-group-item list-group-item-action flex-column align-items-start" style="background-color: #90EE90; color: white;">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1"><%= message.message %></h5>
-              <small class="text-muted"><%= message.created_at.strftime('%d-%h-%y %H:%M') %></small>
+  <div></div>
+  <div class="card shadow p-3 mb-5 bg-white rounded no-bg-img">
+    <div class="card-body">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Election <%= @election.title %>'s chat-box</h5>
+      </div>
+      <div class="chat-box">
+        <div class="form-group">
+          <label for="recipient-name" class="col-form-label">Messages:</label>
+          <div class="border overflow-auto" id="scroll" style="height:250px;">
+            <% @election.messages.each do |message|%>
+            <% if message.message_sender == current_user %>
+            <div class="list-group-item list-group-item-action flex-column align-items-start"
+              style="background-color: #90EE90; color: white;">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 msg"><%= message.message %></h5>
+                <small class="text-muted"><%= message.created_at.strftime('%d-%h-%y %H:%M') %></small>
+              </div>
+              <small class="text-muted"><%= message.message_sender.user_name %></small>
             </div>
-            <small class="text-muted"><%= message.message_sender.user_name %></small>
-          </div>
-        <% else %>
-          <div class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1"><%= message.message %></h5>
-              <small class="text-muted"><%= message.created_at.strftime('%d-%h-%y %H:%M') %></small>
+            <% else %>
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%= message.message %></h5>
+                <small class="text-muted"><%= message.created_at.strftime('%d-%h-%y %H:%M') %></small>
+              </div>
+              <small class="text-muted"><%= message.message_sender.user_name %></small>
             </div>
-            <small class="text-muted"><%= message.message_sender.user_name %></small>
+            <% end %>
+            <% end %>
           </div>
-        <% end %>
-      <% end %>
+        </div>
+        <div class="form-group">
+          <label for="message-text" class="col-form-label">New message:</label>
+          <%= form_with model: @message do |f| %>
+          <%= f.text_field :message, class: "form-control", id: "message-text" %>
+          <%= f.number_field :election_id, value: @election.id, type: 'hidden' %>
+          <div class="modal-footer">
+            <%= link_to 'Back', :back, class:"btn btn-secondary" %>
+            <%= f.submit 'Send message', class: "btn btn-primary", id: "message_submit" %>
+          </div>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="message-text" class="col-form-label">New message:</label>
-    <%= form_with model: @message do |f| %>
-      <%= f.text_field :message, class: "form-control", id: "message-text" %>
-      <%= f.number_field :election_id, value: @election.id, type: 'hidden' %>
-      <div class="modal-footer">
-        <%= link_to 'Back', :back, class:"btn btn-secondary" %>
-        <%= f.submit 'Send message', class: "btn btn-primary", id: "message_submit" %>
-      </div>
-    <% end %>
-  </div>
-</div>
-</div>
-<div></div>
+  <div></div>
 </div>

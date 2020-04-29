@@ -1,20 +1,19 @@
-body {
-    .outer {
-        display: flex;
-        justify-content: center;
-        .inner {
-            margin: 20px 0px;
-            padding: 10px;
-            background: linear-gradient( rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('Group 12@2x.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            border: 1px solid cyan;
-            width: auto;
-            min-height: 400px;
-            height: auto;
-            a {
-                color: black;
-            }
-        }
+.outer {
+    display: flex;
+    justify-content: center;
+    .card {
+        margin: 20px 0px;
+        padding: 10px;
+        background: linear-gradient( rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('Group 12@2x.jpg')!important;
+        background-repeat: no-repeat!important;
+        background-position: center!important;
+        border-radius: 0.35rem;
+        width: auto;
+    }
+    .no-bg-img {
+        margin: 20px 0px;
+        padding: 10px;
+        border-radius: 0.35rem;
+        width: auto;
     }
 }
