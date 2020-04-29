@@ -4,7 +4,8 @@
   first_name: 'prince',
   last_name: 'rabadiya',
   gender: 'Male',
-  password: 'Super_admin420',
+  password: 'Super!admin420',
+  password_confirmation: 'Super!admin420',
   birth_date: '1999-10-08'
 )
 @super_admin.save!
