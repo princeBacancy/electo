@@ -74,7 +74,7 @@ class RequestsController < ApplicationController
 
   def new_request
     request = Request.create_request(current_user, params)
-    if request && !Request.time_out?(request)
+    if request && Request.time_out?(request)
       if request.save
 
         notification = request.election.admin.notifications.build(notification: "new request from #{request.request_sender.user_name} to be #{request.purpose} in election #{request.election.title}",

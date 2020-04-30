@@ -1,11 +1,11 @@
 <%= javascript_pack_tag 'result', 'data-turbolinks-track': 'reload' %>
-<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
 <div class="outer">
   <div></div>
-  <div class="inner">
-    <h1>LIVE RESULTS</h1>
-    <P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
-    <% if (@election.status != "waiting" and request?(@election)) or election_admin?(@election) or super_admin? %>
+  <div class="card shadow p-3 mb-5 bg-white rounded card-design">
+    <div class="card-body">
+      <h1>LIVE RESULTS</h1>
+      <P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
+      <% if (@election.status != "waiting" and request?(@election)) or election_admin?(@election) or super_admin? %>
       <table class="table">
         <thead>
           <tr>
@@ -22,20 +22,21 @@
           <% end %>
         </tbody>
       </table>
-    <% else %>
+      <% else %>
       <p style="color:red">sorry, you are not authorized!!!</p>
-    <% end %>
-    <br />
-    <% if @election.status == "suspended" and @election.election_data.exists?%>
+      <% end %>
+      <br />
+      <% if @election.status == "suspended" and @election.election_data.exists?%>
       <%= pie_chart Election.piechart_data(@election) %>
       <% if @winners_data.count == 1 %>
-        <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
+      <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
       <% elsif %>
-        <h4>Draw Between : </h4><% @winners_data.each do |winner|%>
-        <h4> <%= winner.candidate.user_name %> </h4>
-        <% end %>
+      <h4>Draw Between : </h4><% @winners_data.each do |winner|%>
+      <h4> <%= winner.candidate.user_name %> </h4>
       <% end %>
-    <% end %>
+      <% end %>
+      <% end %>
+    </div>
   </div>
   <div></div>
 </div>

@@ -5,25 +5,11 @@ body {
         margin-bottom: 20px;
         padding: 10px;
         border: 1px solid green;
-        width: 400px;
+        width: auto;
         height: auto;
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
         text-align: center;
-    }
-}
-
-.frame {
-    margin: auto;
-    padding: 100px;
-    .logo {
-        padding-top: 50px;
-    }
-    .login_form {
-        padding: 10px;
-        border: 1px solid red;
-        max-width: 330px;
-        height: 300px;
     }
 }

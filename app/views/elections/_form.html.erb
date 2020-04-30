@@ -1,52 +1,52 @@
-<%= javascript_pack_tag 'election', 'data-turbolinks-track': 'reload' %>
+<%= form_with model:@election, validate: true do |f| %>
+<% if flash[:errors] %>
+<% flash[:errors].each do |error| %>
+<p style="color:red">- <%= error %><br></p>
+<% end %>
+<% end %>
+<div class="form-group">
+  <%= f.label :title %>
+  <%= f.text_field :title, class:"form-control" %>
+</div>
+
+<div class="form-group">
+  <%= f.label :description %><br />
+  <%= f.text_area :description, class:"form-control" %>
+</div>
+
+<div class="form-group">
+  <%= f.label :additional_information %>
+  <%= f.text_field :additional_information, class:"form-control" %>
+</div>
+
+<div class="form-group">
+  <%= f.label :deadline_for_registration %>
+  <%= f.datetime_local_field :deadline_for_registration, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "deadline", class:"form-control" %>
+</div>
+
+<div class="row">
+  <div class="form-group col-md-6">
+    <%= f.label :start_time %>
+    <%= f.datetime_local_field :start_time, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "start_time", class:"form-control" %>
+  </div>
+
+  <div class="form-group col-md-6">
+    <%= f.label :end_time %>
+    <%= f.datetime_local_field :end_time, min: DateTime.now.change(:sec => 0), max: DateTime.now+1.year, id: "end_time", class:"form-control" %>
+  </div>
+</div>
+
+<div>
+  <%= f.submit "submit", id: "submit", class: "btn btn-success" %>
+</div>
+
+<div style="color:red" id="error"></div>
+<% end %>
 
 <%
 =begin%>
- <%= javascript_tag do %>
-    window.p = "<%= @election.title %>";
-<% end %> 
+<%= javascript_tag do %>
+window.p = "<%= @election.title %>";
+<% end %>
 <%
-=end%>
-
-<%= form_with model:@election, validate: true do |f| %>
-<% if flash[:errors] %>
-  <% flash[:errors].each do |error| %>
-    <p style="color:red">- <%= error %><br></p>
-  <% end %>
-<% end %>
-  <div class="form-group"> 
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :description %><br/>
-    <%= f.text_area :description %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :additional_information %>
-    <%= f.text_field :additional_information %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :deadline_for_registration %>
-    <%= f.datetime_local_field :deadline_for_registration, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "deadline" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :start_time %>
-    <%= f.datetime_local_field :start_time, min: DateTime.now.change(:sec => 0), max: DateTime.current+1.year, id: "start_time" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :end_time %>
-    <%= f.datetime_local_field :end_time, min: DateTime.now.change(:sec => 0), max: DateTime.now+1.year, id: "end_time"%>
-  </div>
-
-  <div>
-    <%= f.submit "submit", id: "submit", class: "btn btn-success"%>
-  </div>
-
-  <div style="color:red" id="error"></div>
-<% end %>
+=end %>

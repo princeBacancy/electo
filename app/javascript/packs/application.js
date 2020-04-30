@@ -16,6 +16,7 @@ require("jquery")
 require("chartkick")
 require("chart.js")
 require("packs/notifications")
+    // require("font-awesome")
 
 import "bootstrap"
 import "../stylesheets/application"

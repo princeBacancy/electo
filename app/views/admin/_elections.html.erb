@@ -1,9 +1,9 @@
-<div class="row record">
-  <div class="col-lg-4 left" >
-    <b><%= link_to election.title, election_path(election.id) %></b>
+<div class="row record p-3">
+  <div class="col-lg-6 left">
+    <b class="limit"><%= link_to election.title, election_path(election.id) %></b>
   </div>
-  <div class="col-lg-8 right" >
-    <%= election.description %><br>
+  <div class="col-lg-6 right">
+    <p class="limit"><%= election.description %></p>
     <b> deadline for Registration : </b><%= election.deadline_for_registration.strftime('%d %b %Y %H:%M') %><br>
     <b> election will start on : </b><%= election.start_time.strftime('%d %b %Y') %><b> around </b><%= election.start_time.strftime('%H:%M') %><br>
     <b> election will end on : </b><%= election.end_time.strftime('%d %b %Y') %><b> around </b><%= election.end_time.strftime('%H:%M') %><br>
@@ -16,8 +16,8 @@
         <span style="color:red">suspended</span>
       <% end %><br>
     <% if election_admin?(election) %>
-      <b> approval status : </b> <%= election.approval_status %>
-    <% end %><br>  
+      <b> approval status : </b> <%= election.approval_status %><br>
+    <% end %>  
       <%= render partial: 'admin/election_management',locals: { election: election }%>
   </div>
 </div>

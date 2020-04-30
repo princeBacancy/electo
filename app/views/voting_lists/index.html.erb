@@ -1,34 +1,37 @@
-<div style="margin-top:10px">
+<div class="container" style="margin-top:10px">
   <% if @votes.present? %>
-  <table class="table">
-    <h3> Voting List</h3>
-    <thead>
-      <tr>
-        <th scope="col">election</th>
-        <th scope="col">voter</th>
-        <th scope="col">time</th>
-        <th scope="col">manage</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @votes.each do |vote| %>
-      <tr>
-        <td><%= vote.election.title %></td>
-        <% if super_admin? %>
-        <td><%= link_to vote.voter.user_name , show_user_admin_path(vote.voter_id) %></td>
-        <% else %>
-        <td><%= vote.voter.user_name %></td>
-        <% end %>
-        <td><%= vote.created_at.strftime('%d %b %y %H:%M') %>
-        <td>
-          <%= link_to "delete", voting_list_path(vote.id), data: {method: :delete, confirm:"are you sure to delete???"} %>
-        </td>
-      </tr>
+    <table class="table table-borderless">
+      <%= link_to :back do %>
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
       <% end %>
-    </tbody>
-  </table>
-  <%= will_paginate @voters, renderer: BootstrapPagination::Rails %>
+      <h5><strong> Voting List</strong></h5>
+      <thead>
+        <tr>
+          <th scope="col">election</th>
+          <th scope="col">voter</th>
+          <th scope="col">time</th>
+          <th scope="col">manage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @votes.each do |vote| %>
+        <tr>
+          <td><%= vote.election.title %></td>
+          <% if super_admin? %>
+          <td><%= link_to vote.voter.user_name , show_user_admin_path(vote.voter_id) %></td>
+          <% else %>
+          <td><%= vote.voter.user_name %></td>
+          <% end %>
+          <td><%= vote.created_at.strftime('%d %b %y %H:%M') %>
+          <td>
+            <%= link_to "delete", voting_list_path(vote.id), data: {method: :delete, confirm:"are you sure to delete???"} %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @votes, renderer: BootstrapPagination::Rails %>
   <% else %>
-  <p style="color:red">No Record Found!!!</p>
+    <p style="color:red">No Record Found!!!</p>
   <% end %>
 </div>

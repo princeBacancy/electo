@@ -1,7 +1,6 @@
-<%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% if @elections.present? %>
   <div class="container-fluid">
-  <h5>Elections</h5>
+  <h5><strong>Elections</strong></h5>
     <% @elections.each do |election| %>
       <% if (election.approval_status == "approved" and !election_admin?(election)) or super_admin? %>
         <%= render partial: 'admin/elections', locals: { election: election } %>

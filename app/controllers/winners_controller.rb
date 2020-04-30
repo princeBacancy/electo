@@ -5,7 +5,7 @@ class WinnersController < ApplicationController
   def index
     @winners = Winner.eager_load(:election, election_datum: [:candidate])
                      .where(election_id: params[:id])
-    @winners = @winners.paginate(per_page: 10, page: params[:page])
+                     .paginate(per_page: 10, page: params[:page])
   end
 
   def destroy
