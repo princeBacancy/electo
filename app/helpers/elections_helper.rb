@@ -20,7 +20,7 @@ module ElectionsHelper
   end
 
   def deadline?(election)
-    election.deadline_for_registration.strftime('%d %b %Y %H:%M') <= DateTime.now.strftime('%d %b %Y %H:%M')
+    election.deadline_for_registration > DateTime.now
   end
 
   def request_exist?(election)

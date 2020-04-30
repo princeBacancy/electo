@@ -10,8 +10,6 @@ consumer.subscriptions.create("ERoomChannel", {
     },
 
     received(data) {
-        console.log(data.message)
-        $('#' + data.election_id).append('<div class="msg">' + data.message + '</div>')
-            // Called when there's incoming data on the websocket for this channel
+        $('.chat-box').load(window.location.href + ' .chat-box');
     }
 });

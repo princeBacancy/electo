@@ -1,0 +1,13 @@
+.frame {
+    margin: auto;
+    padding: 100px;
+    .logo {
+        padding-top: 50px;
+    }
+    .login_form {
+        padding: 10px;
+        border: 1px solid red;
+        max-width: 330px;
+        height: 300px;
+    }
+}

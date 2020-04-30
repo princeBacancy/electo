@@ -1,24 +1,24 @@
-<%= stylesheet_link_tag 'middle_layout', media: 'all', 'data-turbolinks-track': 'reload' %>
-
 <% if super_admin? %>
 <div class="outer">
   <div></div>
-  <div class="inner">
-    <div>
-      <h2><%= @user.user_name %></h2>
-      <p><b>first name:</b> <%= @user.first_name %></p>
-      <p><b>last name:</b> <%= @user.last_name %></p>
-      <p><b>gender:</b><%= @user.gender %></p>
-      <p><b>birth date:</b><%= @user.birth_date %></p>
-    </div>
+  <div class="card shadow p-3 mb-5 bg-white rounded card-design">
+    <div class="card-body">
+      <div>
+        <h2><%= @user.user_name %></h2>
+        <p><b>first name:</b> <%= @user.first_name %></p>
+        <p><b>last name:</b> <%= @user.last_name %></p>
+        <p><b>gender:</b><%= @user.gender %></p>
+        <p><b>birth date:</b><%= @user.birth_date %></p>
+      </div>
 
-    <%= link_to "-> go to Elections of user", user_elections_admin_path(@user.id) %><br>
-    <%= link_to "-> go to Requests of user", send_requests_request_path(@user.id) %><br>
-    <%= link_to "-> go to election in which user has Voted", user_votes_admin_path(@user.id) %><br>
-    <%= link_to "-> go to election in which user is candidate", user_candidate_admin_path(@user.id) %><br>
-    <%= link_to "-> go to election in which user in winner", user_winner_admin_path(@user.id) %> <br>
+      <%= link_to "-> go to Elections of user", user_elections_admin_path(@user.id) %><br>
+      <%= link_to "-> go to Requests of user", send_requests_request_path(@user.id) %><br>
+      <%= link_to "-> go to election in which user has Voted", user_votes_admin_path(@user.id) %><br>
+      <%= link_to "-> go to election in which user is candidate", user_candidate_admin_path(@user.id) %><br>
+      <%= link_to "-> go to election in which user in winner", user_winner_admin_path(@user.id) %> <br>
+    </div>
+    <div></div>
   </div>
-  <div></div>
 </div>
 <% else %>
 <p style="color:red">You are not authorized!!!</p>

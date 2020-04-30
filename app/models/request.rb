@@ -29,8 +29,7 @@ class Request < ApplicationRecord
   end
 
   def self.time_out?(request)
-    request.election.deadline_for_registration.strftime('%d %b %Y %H:%M') <
-      DateTime.now.strftime('%d %b %Y %H:%M')
+    request.election.deadline_for_registration > DateTime.now
   end
 
   def request_confirmation_mail

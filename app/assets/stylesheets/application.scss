@@ -1,0 +1,26 @@
+* {
+    font-family: 'Oxanium', cursive;
+}
+
+.custom-nav {
+    background-color: white !important;
+}
+
+.message {
+    color: red
+}
+
+.msg {
+    font-size: 20px;
+    width: 280px;
+}
+
+h5 {
+    text-align: center;
+}
+
+@import "font-awesome";
+@import "middle_layout";
+@import "login_form";
+@import "election_form";
+@import "elections";

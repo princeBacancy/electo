@@ -1,6 +1,6 @@
 <% if requests.present? %>
 <div class="container">
-  <table class="table">
+  <table class="table table-borderless">
     <thead>
       <tr>
         <th scope="col">sender</th>
@@ -21,7 +21,9 @@
           <%= link_to "delete", request_path(request.id), data: {method: :delete, confirm:"are you sure to delete request???"} %>
         </td>
         <% if (super_admin? or election_admin?(request.election)) and request.status == "pending" %>
-        <td><%= link_to "approve", approve_request_path(request.id) %></td>
+          <td><%= link_to "approve", approve_request_path(request.id) %></td>
+        <% else %>
+          <td></td>
         <% end %>
       </tr>
       <% end %>

@@ -4,9 +4,12 @@ $(document).ready(function() {
         console.log("delete")
         $.ajax({
             url: "/notifications/mark_as_read",
-            type: "GET"
+            type: "GET",
+            success: function(data) {
+                $("#refresh").load(window.location.href + " #refresh");
+            }
         });
-        $("#refresh").load(window.location.href + " #refresh");
+
     });
 
 });

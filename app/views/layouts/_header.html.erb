@@ -52,21 +52,25 @@
         <% end %>
       </ul>
       <ul class="navbar-nav mr-right">
-      <div id="refresh">
-        <li class="nav-item avatar dropdown">
-          <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="badge badge-danger ml-2"><%= get_notifications.count %></span>
-            <i class="fas fa-bell"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
-            <% if @notifications.count > 0 %>  
-              <a style="color:red" class="dropdown-item waves-effect waves-light" id="mark_as_read" href="#">mark all as read</a>
-            <% end %>
-            <% @notifications.each do |notification| %>
-              <a class="dropdown-item waves-effect waves-light" href="#"><%= notification.notification %></a>
-            <% end %>
-          </div>  
-        </li>
+        <div id="refresh" data-id="<%= current_user.id %>">
+          <li class="nav-item avatar dropdown">
+            <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span class="badge badge-danger ml-2"><%= get_notifications.count %></span><i class="fa fa-bell" aria-hidden="true"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
+              <% if @notifications.count > 0 %>  
+                <a style="color:red" class="dropdown-item waves-effect waves-light" id="mark_as_read" href="#">mark all as read</a>
+                <% @notifications.each do |notification| %>
+                  <a class="dropdown-item waves-effect waves-light" href="#">
+                    <div class="widget-content-left flex2">
+                      <div class="widget-heading"><%= notification.notification %></div>
+                      <div class="widget-subheading opacity-7"><small style="color:gray"><%= notification.created_at.strftime("%d-%m-%y %H:%M") %> </small></div>
+                    </div>
+                  </a>
+                <% end %>
+              <% end %>
+            </div>  
+          </li>
         </div>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

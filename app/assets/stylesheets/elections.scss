@@ -6,6 +6,7 @@
     line-height: 30px;
     .left {
         padding: 30px;
+        padding-left: 20%;
         a {
             text-decoration: none;
             color: black;
@@ -15,5 +16,8 @@
     .right {
         border-left: 1px solid #ccc;
         padding: 20px 40px;
+    }
+    .limit {
+        word-wrap: break-word;
     }
 }
