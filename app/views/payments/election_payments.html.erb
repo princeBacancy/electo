@@ -1,36 +1,39 @@
-<h5>election <%= @payments.first.election.title %>'s payments</h5>
-<% if @payments.present? %>
 <div class="container">
-  <table class="table">
-    <thead>
-      <tr>
-        <% if super_admin? %>
-          <th scope="col">candidate</th>
+  <%= link_to :back do %>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  <% end %>
+  <h5><strong>election <%= @payments.first.election.title %>'s payments</strong></h5>
+  <% if @payments.present? %>
+    <table class="table table-borderless">
+      <thead>
+        <tr>
+          <% if super_admin? %>
+            <th scope="col">candidate</th>
+          <% end %>
+            <th scope="col">election</th>
+            <th scope="col">amount(INR)</th>
+            <th scope="col">status</th>
+            <th scope="col">options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @payments.each do |payment| %>
+        <tr>
+          <% if super_admin? %>
+            <td><%= payment.user.user_name %></td>
+          <% end %>
+          <td><%= payment.election.title %></td>
+          <td><%= payment.amount %></td>
+          <td><%= payment.status %></td>
+          <% if !super_admin? or current_user == payment.user %>
+            <td><%= link_to "pay now", new_charge_path(election_id: payment.election_id) %>
+          <% end %>
+            
+        </tr>
         <% end %>
-          <th scope="col">election</th>
-          <th scope="col">amount(INR)</th>
-          <th scope="col">status</th>
-          <th scope="col">options</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @payments.each do |payment| %>
-      <tr>
-        <% if super_admin? %>
-          <td><%= payment.user.user_name %></td>
-        <% end %>
-        <td><%= payment.election.title %></td>
-        <td><%= payment.amount %></td>
-        <td><%= payment.status %></td>
-        <% if !super_admin? or current_user == payment.user %>
-          <td><%= link_to "pay now", new_charge_path(election_id: payment.election_id) %>
-        <% end %>
-          
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  <% else %>
+    <P style="color:red">No Record Found!!!</p>
+  <% end %>
 </div>
-<% else %>
-  <P style="color:red">No Record Found!!!</p>
-<% end %>

@@ -1,6 +1,9 @@
-<%= stylesheet_link_tag 'elections', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% if @elections.exists? %>
   <div class="container-fluid">
+  <%= link_to :back do %>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  <% end %>
+  <h5><strong>My Elections</strong></h5>
     <% @elections.each do |election| %>
       <% if election_admin?(election) %>
         <%= render partial: 'admin/elections', locals: { election: election } %>

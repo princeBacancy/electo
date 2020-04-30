@@ -1,7 +1,14 @@
 .outer {
     display: flex;
     justify-content: center;
-    .card {
+    .no-bg-img {
+        margin: 20px 0px;
+        padding: 10px;
+        border-radius: 0.35rem;
+        width: auto;
+        min-width: 450px;
+    }
+    .card-design {
         margin: 20px 0px;
         padding: 10px;
         background: linear-gradient( rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('Group 12@2x.jpg')!important;
@@ -9,11 +16,7 @@
         background-position: center!important;
         border-radius: 0.35rem;
         width: auto;
-    }
-    .no-bg-img {
-        margin: 20px 0px;
-        padding: 10px;
-        border-radius: 0.35rem;
-        width: auto;
+        min-height: 500px;
+        min-width: 450px;
     }
 }

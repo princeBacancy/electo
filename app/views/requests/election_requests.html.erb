@@ -1,3 +1,7 @@
-<div style="cursive; margin-top:10px">
-<h5>Election <%= @requests.first.election.title %>'s requests </h5>
-<%= render partial: 'requests',locals: { requests: @requests } %>
+<div class="container" style="cursive; margin-top:10px">
+  <%= link_to :back do %>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  <% end %>
+  <h5><strong>Election <%= @requests.first.election.title %>'s requests </strong></h5>
+  <%= render partial: 'requests',locals: { requests: @requests } %>
+</div>
