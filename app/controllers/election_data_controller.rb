@@ -11,7 +11,7 @@ class ElectionDataController < ApplicationController
   def destroy
     election_data = ElectionDatum.find_by(id: params[:id])
     unless election_data.destroy
-      flash[:status] = "Failed!!!!"
+      flash[:errors] = "Failed!!!!"
     end 
   end
 end

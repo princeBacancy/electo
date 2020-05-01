@@ -15,14 +15,21 @@
 
   <body>
     <%= render partial: 'layouts/header' %>
+    <% if flash.key?(:errors) %>
+      <div class="alert alert-danger" role="alert">
+        <%= flash[:errors] %>
+      </div>
+    <% end %>
     <% if flash.key?(:status) %>
-      <p class="notice" style="color:red"><%= flash[:status] %></p>
+      <div class="alert alert-success" role="alert">
+        <%= flash[:status] %>
+      </div>
     <% end %>
     <% if notice %>
-      <p class="notice"><%= notice %></p>
+      <p class="notice alert alert-info"><%= notice %></p>
     <% end %>
     <% if alert %>
-      <p class="alert"><%= alert %></p>
+      <p class="alert alert alert-warning"><%= alert %></p>
     <% end %>
     <%= yield %>
   </body>

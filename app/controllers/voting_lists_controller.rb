@@ -9,6 +9,6 @@ class VotingListsController < ApplicationController
 
   def destroy
     voter = VotingList.find_by(id: params[:id])
-    flash[:status] = 'failed!!!' unless voter.destroy
+    flash[:errors] = 'failed!!!' unless voter.destroy
   end
 end

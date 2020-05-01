@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
                             purpose: 'voter', status: :approved)
       if request && request.save
         unless pending_voter.destroy
-          flash[:status] = "failed!!!"
+          flash[:errors] = "failed!!!"
         end
       end
     end

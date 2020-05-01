@@ -30,7 +30,7 @@ class RequestsController < ApplicationController
     if !request
       new_request
     elsif request
-      flash[:status] = 'request already send'
+      flash[:errors] = 'request already send'
       redirect_to send_requests_request_path(current_user.id)
     end
   end
@@ -45,7 +45,7 @@ class RequestsController < ApplicationController
                                                                read_at: nil)
     # ActionCable.server.broadcast('notification_channel',
     #                              notification: notification)
-    flash[:status] = 'notification problem' unless notification&.save
+    flash[:errors] = 'notification problem' unless notification&.save
     RequestConfirmedMailer.request_confirmed(@request).deliver
     if @request&.update(status: :approved)
       flash[:status] = 'request approved!!!'
@@ -81,15 +81,15 @@ class RequestsController < ApplicationController
                                                                    read_at: nil)
         # ActionCable.server.broadcast('notification_channel',
         #                              notification: notification)
-        flash[:status] = 'notification problem' unless notification&.save
+        flash[:errors] = 'notification problem' unless notification&.save
         flash[:status] = 'request send to election admin!!!'
         redirect_to send_requests_request_path(current_user.id)
       else
-        flash[:status] = 'something went wrong!!!'
+        flash[:errors] = 'something went wrong!!!'
         render election_path
       end
     else
-      flash[:status] = 'time out!!!'
+      flash[:errors] = 'time out!!!'
       redirect_to send_requests_request_path(current_user.id)
     end
   end
