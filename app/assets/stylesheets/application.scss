@@ -19,6 +19,11 @@ h5 {
     text-align: center;
 }
 
+.chat-div {
+    display: flex;
+    justify-content: space-between;
+}
+
 @import "font-awesome";
 @import "middle_layout";
 @import "login_form";
