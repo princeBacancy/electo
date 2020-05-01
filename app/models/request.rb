@@ -36,6 +36,11 @@ class Request < ApplicationRecord
     RequestConfirmMailer.request_confirm(self).deliver
   end
 
+  def self.broadcast(notification)
+    ActionCable.server.broadcast('notification_channel',
+                                 notification: notification)
+  end
+
   def self.import(file, election_id)
     election = Election.includes(:requests, :pending_voters).find(election_id)
     CSV.foreach(file.path, headers: true) do |row|
