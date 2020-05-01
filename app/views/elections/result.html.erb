@@ -6,35 +6,34 @@
       <h1>LIVE RESULTS</h1>
       <P style="color:orange">if page not refresh automatically after ten seconds then refresh manually</p>
       <% if (@election.status != "waiting" and request?(@election)) or election_admin?(@election) or super_admin? %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">candidate</th>
-            <th scope="col">votes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @election.election_data.each do |votes| %>
-          <tr>
-            <td><%= votes.candidate.user_name %></td>
-            <td><%= votes.votes_count %><%= @x %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">candidate</th>
+              <th scope="col">votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @election.election_data.each do |votes| %>
+              <tr>
+                <td><%= votes.candidate.user_name %></td>
+                <td><%= votes.votes_count %><%= @x %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       <% else %>
-      <p style="color:red">sorry, you are not authorized!!!</p>
+        <p style="color:red">sorry, you are not authorized!!!</p>
       <% end %>
-      <br />
       <% if @election.status == "suspended" and @election.election_data.exists?%>
-      <%= pie_chart Election.piechart_data(@election) %>
-      <% if @winners_data.count == 1 %>
-      <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
-      <% elsif %>
-      <h4>Draw Between : </h4><% @winners_data.each do |winner|%>
-      <h4> <%= winner.candidate.user_name %> </h4>
-      <% end %>
-      <% end %>
+        <% if @winners_data.count == 1 %>
+          <h4>Winner : <%= @winners_data.first.candidate.user_name %></h4>
+        <% elsif %>
+          <h4>Draw Between : </h4><% @winners_data.each do |winner|%>
+            <h4> <%= winner.candidate.user_name %> </h4>
+          <% end %>
+        <% end %>
+        <%= pie_chart Election.piechart_data(@election) %>
       <% end %>
     </div>
   </div>

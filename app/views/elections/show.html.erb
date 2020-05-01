@@ -14,11 +14,11 @@
         </div>
         <p><b>election admin:</b> <%= @election.admin.user_name %></p>
         <p><b>description:</b> <%= @election.description %></p>
-        <p><b>additional information:</b><%= @election.additional_information %></p>
+        <p><b>additional information:</b> <%= @election.additional_information %></p>
         <p><b>deadline for
-            registration:</b><%= @election.deadline_for_registration.strftime('%d %b %y %H:%M') %></p>
-        <p><b>start time:</b><%= @election.start_time.strftime('%d %b %y %H:%M') %></p>
-        <p><b>end time:</b><%= @election.end_time.strftime('%d %b %y %H:%M') %></p>
+            registration:</b> <%= @election.deadline_for_registration.strftime('%d %b %y %H:%M') %></p>
+        <p><b>start time:</b> <%= @election.start_time.strftime('%d %b %y %H:%M') %></p>
+        <p><b>end time:</b> <%= @election.end_time.strftime('%d %b %y %H:%M') %></p>
         <p><b>status:</b>
           <% if @election.status == "live" %>
             <span style="color:green">Live</span>

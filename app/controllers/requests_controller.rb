@@ -49,7 +49,7 @@ class RequestsController < ApplicationController
     RequestConfirmedMailer.request_confirmed(@request).deliver
     if @request&.update(status: :approved)
       flash[:status] = 'request approved!!!'
-      redirect_to received_requests_request_path(current_user.id)
+      redirect_back(fallback_location: root_path)
     end
   end
 
