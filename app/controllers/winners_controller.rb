@@ -11,7 +11,7 @@ class WinnersController < ApplicationController
   def destroy
     winner = Winner.find_by(id: params[:id])
     unless winner.destroy
-      flash[:status] = "failed!!!"
+      flash[:errors] = "failed!!!"
     end
   end
 end

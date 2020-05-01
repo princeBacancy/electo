@@ -1,8 +1,8 @@
 <%= form_tag charges_path do %>
 <article>
-    <% if flash[:error].present? %>
+    <% if flash[:errors].present? %>
     <div id="error_explanation">
-        <p><%= flash[:error] %></p>
+        <p><%= flash[:errors] %></p>
     </div>
     <% end %>
     <label class="amount">

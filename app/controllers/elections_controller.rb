@@ -51,7 +51,7 @@ class ElectionsController < ApplicationController
       notification = @election.admin.notifications.build(notification: "your election #{@election.title} is approved", read_at: nil)
       ActionCable.server.broadcast('notification_channel',
                                    notification: notification)
-      flash[:status] = 'notification problem' unless notification&.save
+      flash[:errors] = 'notification problem' unless notification&.save
 
       ConfirmedElectionMailer.confirmed(@election).deliver
       if current_user
@@ -59,7 +59,7 @@ class ElectionsController < ApplicationController
         redirect_to :root
       end
     elsif current_user
-      flash[:status] = 'failed!!!'
+      flash[:errors] = 'failed!!!'
       render :root
     end
   end
@@ -69,7 +69,7 @@ class ElectionsController < ApplicationController
       redirect_to :root
       flash[:status] = 'destroyed!!!'
     else
-      flash[:status] = 'failed!!!'
+      flash[:errors] = 'failed!!!'
     end
   end
 
@@ -81,7 +81,7 @@ class ElectionsController < ApplicationController
        (@election.status == 'waiting')
       start_election(@election)
     elsif !@election
-      flash[:status] = 'failed!!!'
+      flash[:errors] = 'failed!!!'
       render 'show'
     end
   end
@@ -95,7 +95,7 @@ class ElectionsController < ApplicationController
         flash[:status] = "voted successfully to #{params[:election][:candidates]}"
         redirect_to result_election_path(@election.id)
       else
-        flash[:status] = 'failed to vote'
+        flash[:errors] = 'failed to vote'
         redirect_to start_election_path
       end
     end
@@ -106,7 +106,7 @@ class ElectionsController < ApplicationController
        .update(status: :suspended)
       redirect_to result_election_path(@election.id)
     else
-      flash[:status] = 'failed!!!'
+      flash[:errors] = 'failed!!!'
       render 'show'
     end
   end

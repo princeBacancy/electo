@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
                                    sender: message.message_sender.user_name,
                                    election_id: message.election_id
     else
-      flash[:status] = 'failed'
+      flash[:errors] = 'failed'
     end
   end
 
