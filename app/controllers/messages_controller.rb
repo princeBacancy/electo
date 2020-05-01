@@ -11,10 +11,10 @@ class MessagesController < ApplicationController
   def create
     message = current_user.messages.build(election_id: params[:message][:election_id], message: params[:message][:message])
     if message.save
-      ActionCable.server.broadcast 'e_room_channel',
-                                   message: message.message,
-                                   sender: message.message_sender.user_name,
-                                   election_id: message.election_id
+      # ActionCable.server.broadcast 'e_room_channel',
+      #                              message: message.message,
+      #                              sender: message.message_sender.user_name,
+      #                              election_id: message.election_id
     else
       flash[:errors] = 'failed'
     end

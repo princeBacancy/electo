@@ -37,8 +37,8 @@ class Request < ApplicationRecord
   end
 
   def self.broadcast(notification)
-    ActionCable.server.broadcast('notification_channel',
-                                 notification: notification)
+    # ActionCable.server.broadcast('notification_channel',
+    #                              notification: notification)
   end
 
   def self.import(file, election_id)
