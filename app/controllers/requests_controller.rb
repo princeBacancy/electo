@@ -61,7 +61,7 @@ class RequestsController < ApplicationController
                      else
                        'failed!!!'
                      end
-    redirect_to send_requests_request_path(current_user.id)
+    redirect_back(fallback_location: root_path)
   end
 
   def import_voters
